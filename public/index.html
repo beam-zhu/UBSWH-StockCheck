@@ -1,0 +1,903 @@
+<!doctype html><html lang="zh-CN"><head><base href="./"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#28664c"><title>库位核对 · Urbansales</title><style>@import "tailwindcss";
+:root{--bg:#f6f6f2;--ink:#20332d;--muted:#758078;--green:#28664c;--border:#e5e8e0;--orange:#d9893e;color-scheme:light;font-family:Inter,"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg)}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-size:14px}button,input,a{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}input{font:inherit;min-width:0}button:focus-visible,a:focus-visible{outline:3px solid #88bca0;outline-offset:3px}input:focus{outline:none}h1,h2,h3,p{margin:0}button,a,input{touch-action:manipulation}button svg{flex-shrink:0}svg{flex-shrink:0}a{color:inherit;text-decoration:none}.topbar{height:82px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 max(28px,calc((100vw - 1120px)/2));gap:16px}.brand{display:flex;align-items:center;gap:11px;font-size:15px;letter-spacing:1.2px;font-weight:800;line-height:1.2}.brand-mark{display:grid;place-items:center;width:40px;height:40px;background:#e5ab68;color:#fff;border-radius:10px}.brand-sub{display:block;font-size:8px;font-weight:600;letter-spacing:1.9px;color:#8e9690;margin-top:6px}.header-right{display:flex;align-items:center;gap:12px}.device-tag{display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.8px;color:#849087;border-right:1px solid var(--border);padding-right:18px}.icon-button{border:none;background:transparent;color:#7b857e;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;flex-shrink:0}.icon-button:hover{background:#edf1eb;color:var(--green)}.workspace{max-width:1120px;margin:0 auto;padding:40px 0 24px}.page-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:700;color:#91a094;margin-bottom:10px}h1{font-size:32px;letter-spacing:-.9px;font-weight:750;line-height:1.3}.heading-dot{color:var(--orange);margin-left:3px}.page-heading p{font-size:13px;color:#8b938c;margin-top:9px;letter-spacing:1px}.connection{display:flex;gap:7px;align-items:center;font-size:11px;color:#61806a;background:#eaf0e7;border:1px solid #dee8d9;border-radius:20px;padding:7px 12px}.status-dot,.small-dot{width:6px;height:6px;background:#689568;display:inline-block;border-radius:50%;box-shadow:0 0 0 3px #68956812}.connection.offline{color:#a65a3d;background:#fff0e5;border-color:#f1d7bd}.offline .status-dot,.small-dot.red{background:#c16d49}.main-grid{display:grid;grid-template-columns:minmax(0,1fr) 294px;gap:26px;align-items:start}.primary-area{min-width:0}.card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 3px 8px #1e392202}.location-card{padding:25px 27px}.section-kicker{display:flex;align-items:center;gap:8px;color:#67746b;font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:21px}.step-number{font-size:10px;font-weight:600;border:1px solid #dce5d8;border-radius:5px;color:#688260;width:23px;height:22px;display:grid;place-items:center}.field-label{display:block;font-size:12px;font-weight:600;color:#46584c;margin-bottom:9px}.location-row{display:flex;gap:12px;align-items:stretch}.location-field{display:flex;align-items:center;gap:12px;border:1px solid #dbe1d6;background:#fafbf8;border-radius:9px;padding:0 15px;flex:1}.location-field svg{color:#a5ae9f}.location-field:focus-within{border-color:#6d9878;box-shadow:0 0 0 3px #6d987812}.location-field input{border:none;background:transparent;width:100%;height:53px;font-size:20px;font-weight:550;letter-spacing:.7px;color:var(--ink)}input::placeholder{color:#a8afa6;font-weight:400}.button{border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:9px;padding:14px 21px;font-size:13px;font-weight:600;min-height:51px;white-space:nowrap}.button.primary{background:var(--green);color:#fff;box-shadow:0 2px 3px #1d513412}.button.primary:not(:disabled):hover{background:#1d503b}.button.secondary{background:#f3f5ef;border-color:#e6e9e1;color:#66715f}.location-note{display:flex;align-items:center;gap:6px;color:#99a091;font-size:10px;margin-top:13px;line-height:1.5}.empty-state{text-align:center;padding:53px 10px 65px}.empty-illustration{position:relative;display:grid;place-items:center;width:126px;height:126px;margin:0 auto 23px;color:#a3b59d;background:radial-gradient(circle,#e9eee3 30%,transparent 72%)}.scan-corners{position:absolute;inset:15px;border:1px solid #c4d2b9;border-radius:17px;clip-path:polygon(0 0,24% 0,24% 8%,76% 8%,76% 0,100% 0,100% 24%,92% 24%,92% 76%,100% 76%,100% 100%,76% 100%,76% 92%,24% 92%,24% 100%,0 100%,0 76%,8% 76%,8% 24%,0 24%)}.scan-beam{position:absolute;left:26px;right:26px;height:1px;top:67px;background:#c3945a;box-shadow:0 0 12px 2px #d9b58040}.empty-state h2{font-size:17px;font-weight:600;letter-spacing:.3px;margin-bottom:13px}.empty-state p{font-size:12px;line-height:1.9;color:#899384}.empty-steps{display:flex;align-items:center;justify-content:center;gap:12px;font-size:10px;color:#9ea697;margin-top:26px}.empty-steps span{padding:6px 12px;background:#edf0e8;border-radius:5px}.sidebar{display:flex;flex-direction:column;gap:20px}.source-card{padding:21px}.aside-title{display:flex;align-items:center;gap:8px}.aside-title h2{font-size:12px;font-weight:650;flex:1}.aside-title .icon-button{width:25px;height:25px}.source-name{display:flex;align-items:center;gap:11px;margin-top:24px}.source-name>svg{margin-left:auto;color:#739367}.source-name strong{display:block;font-size:12px;font-weight:550;margin-bottom:5px}.source-name span{display:block;font-size:9px;color:#98a08f}.sheets-icon{font-size:24px;font-weight:700;background:#eef4e7;color:#809d60;width:34px;height:39px;display:grid;place-items:center;border-radius:5px}.source-details{border-top:1px solid #f0f1ec;margin-top:21px;padding-top:12px}.source-details>div{display:flex;justify-content:space-between;gap:6px;font-size:10px;line-height:2.5}.source-details span{color:#96a08f}.source-details strong{font-weight:500;color:#677461}.micro-copy{font-size:9px;color:#a3aa9c;line-height:1.6;margin-top:9px}.guide-card{padding:25px 21px;border:1px solid #e1e6d8;border-radius:14px;background:#edf1e7}.guide-card .eyebrow{font-size:9px;color:#9ca98f;letter-spacing:1.6px}.guide-card h2{font-size:14px;line-height:1.7;font-weight:650;letter-spacing:.3px}.guide-card ol{list-style:none;padding:0;margin:25px 0}.guide-card li{display:flex;gap:11px;margin-bottom:20px}.guide-card li>span{width:20px;height:20px;border:1px solid #d5decb;border-radius:50%;display:grid;place-items:center;font-size:9px;color:#8c9d7e;flex-shrink:0}.guide-card li strong{font-size:11px;font-weight:600;color:#64735b}.guide-card li p{font-size:10px;line-height:1.9;color:#97a18b;margin-top:5px}.text-button{display:inline-flex;gap:6px;align-items:center;border:0;background:transparent;color:#7e9470;font-size:11px;padding:6px 0;min-height:30px;white-space:nowrap}.text-button:hover{color:#2b6646}.guide-card>.text-button{font-size:10px;border-top:1px solid #dee5d5;padding-top:14px;width:100%;justify-content:space-between}.message{display:flex;gap:10px;align-items:center;padding:14px 17px;border-radius:9px;line-height:1.7;font-size:12px;margin-bottom:18px;border:1px solid transparent}.message>span{flex:1}.message.error{background:#fff0e9;border-color:#f1d5c5;color:#b25c3d}.message.success{background:#e9f1e5;border-color:#dae7d1;color:#56764b}.message .icon-button{width:24px;height:24px}.message.compact{margin:12px 0 0;padding:10px;font-size:12px}.source-error{color:#ac704c;margin-top:18px}.source-error p{font-size:12px;line-height:1.7;margin:9px 0}.source-error small{font-size:10px;line-height:1.7;display:block;color:#9c8d7b}.snapshot-note{display:flex;gap:8px;margin-top:14px;padding:12px 11px;background:#f4f6ef;border-radius:8px;color:#8b9c7d;font-size:10px;line-height:1.8}.snapshot-note strong{font-weight:500}.scan-card{padding:25px 27px;margin-top:20px}.scan-card-header{display:flex;justify-content:space-between;align-items:center;gap:10px}.scan-card-header .section-kicker{margin-bottom:12px}.active-location{font-size:24px;letter-spacing:-.6px;font-weight:650;display:flex;align-items:center;gap:13px}.pill{font-size:9px;font-weight:500;letter-spacing:0;border-radius:20px;padding:5px 9px}.pill.green{background:#edf3e6;color:#799365}.pill.neutral{background:#f1f2ed;color:#8b9482}.scan-progress{text-align:right}.scan-progress strong{display:block;font-size:26px;line-height:1.5;font-weight:650;color:#345e3e}.scan-progress strong span{font-size:14px;font-weight:400;color:#b0b9a9}.scan-progress small{font-size:9px;color:#9ba791}.progress-track{height:4px;background:#f0f3eb;border-radius:8px;overflow:hidden;margin:20px 0 24px}.progress-track>span{display:block;background:#91ac72;height:100%;transition:width .25s}.barcode-field{display:flex;gap:13px;align-items:center;border:1px solid #b4c6a8;padding:5px 7px 5px 15px;border-radius:10px;box-shadow:0 0 0 3px #8ca7760a}.barcode-field>svg{color:#799767}.barcode-field input{border:0;background:transparent;height:47px;width:100%;font-size:17px;letter-spacing:.5px;color:var(--ink)}.barcode-field:focus-within{box-shadow:0 0 0 3px #7ea56c1a;border-color:#77a263}.scan-submit{display:grid;place-items:center;width:38px;height:38px;flex-shrink:0;border:0;background:#edf2e6;border-radius:7px;color:#658c54}.scan-hint{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;color:#a1aa96;font-size:10px}.scan-hint .text-button{font-size:10px}.result-card{margin-top:20px;overflow:hidden}.result-header{display:flex;justify-content:space-between;align-items:center;padding:22px 25px 17px}.result-header h2{font-size:15px;font-weight:600;display:flex;gap:8px;align-items:center}.result-header h2 span{font-size:10px;padding:2px 6px;background:#eef1e9;border-radius:5px;color:#98a18e}.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);padding:0 24px 20px;gap:7px}.stat{display:flex;flex-direction:column;align-items:center;gap:7px;border:1px solid #ecf0e5;background:#f9faf7;padding:12px 3px;border-radius:8px}.stat strong{font-size:23px;font-weight:550;line-height:1.2;color:#56784b}.stat span{font-size:10px;color:#9da693}.stat.selected{border-color:#98b687;background:#f0f5e9}.stat .stat-red{color:#bc7855}.list-toolbar{display:flex;align-items:center;justify-content:space-between;padding:8px 25px;background:#fafbf8;border-top:1px solid #eff1e9;border-bottom:1px solid #eff1e9;font-size:10px;color:#a0a895}.list-toolbar button{font-size:10px}.result-list{padding:0 25px}.sku-row{padding:17px 0;border-bottom:1px solid #eef0e8}.sku-row:last-child{border-bottom:0}.sku-line{display:flex;align-items:center;justify-content:space-between;gap:10px}.sku-number{display:flex;gap:8px;align-items:center;font-size:15px;font-weight:650;letter-spacing:.3px}.sku-number svg{color:#adb79f}.result-badge{font-size:9px;border-radius:4px;padding:4px 7px;font-weight:500}.result-badge.match{background:#eef5e8;color:#709758}.result-badge.waiting{background:#f2f3ee;color:#a2aa95}.result-badge.mismatch{background:#fcf0e7;color:#bc805d}.sku-label{font-size:10px;color:#96a08b;margin:7px 0 11px;overflow-wrap:anywhere;letter-spacing:.1px}.sku-bottom{display:flex;justify-content:space-between;gap:8px;align-items:center}.quantities{display:flex;gap:17px;align-items:center;flex-wrap:wrap;font-size:10px;color:#acb49f}.quantities b{font-size:13px;color:#7e8f6f;font-weight:550;margin-left:5px}.quantities .difference{color:#b98159;font-size:10px}.row-actions{display:flex;gap:6px}.row-actions button{width:31px;height:31px;display:grid;place-items:center;background:#f4f6f0;border:0;border-radius:6px;color:#96a588}.row-actions button:hover{background:#e8efdf;color:#5c7c4c}.no-differences{padding:35px 10px;text-align:center;color:#95ac83}.no-differences svg{margin:0 auto 9px}.no-differences p{font-size:12px;color:#9fa991}.task-actions{position:sticky;bottom:0;padding:16px 0;background:linear-gradient(transparent,var(--bg) 25%);z-index:5}.task-actions>.button{width:100%;height:54px}.finished-banner{display:flex;align-items:center;gap:13px;background:#faf2e7;color:#b88859;padding:18px;border-radius:9px}.finished-banner strong{font-size:14px}.finished-banner p{font-size:11px;margin-top:6px;line-height:1.7;color:#b49e83}.finished-banner.passed{background:#edf5e5;color:#7f9c5f}.finished-banner.passed p{color:#9aaa8c}footer{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#b0b7a7;border-top:1px solid #e8ebe1;padding-top:20px;margin-top:38px;gap:14px}footer span:first-child{display:flex;align-items:center;gap:5px}.modal-backdrop{position:fixed;inset:0;z-index:30;background:#1d2b22a6;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:22px;overflow:auto}.count-modal,.help-modal{background:#fff;border-radius:19px;max-width:420px;width:100%;padding:25px;max-height:94vh;max-height:94dvh;overflow:auto;box-shadow:0 30px 100px #0e21172b}.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.modal-scan-icon{display:grid;place-items:center;width:43px;height:43px;border:1px solid #dce6d1;background:#f4f7ed;border-radius:11px;color:#8aa470}.count-modal .eyebrow{font-size:9px;color:#a7b299;margin-bottom:7px}.count-modal h2,.help-modal h2{font-size:23px;letter-spacing:-.7px;font-weight:650}.confirmed-sku{padding:15px 0 18px}.confirmed-sku>strong{font-size:27px;font-weight:650;color:#678d51;letter-spacing:1px}.confirmed-sku p{font-size:11px;color:#8b9b7c;overflow-wrap:anywhere;line-height:1.7;margin:5px 0 8px}.confirmed-sku>span{display:inline-flex;gap:4px;align-items:center;color:#a5b098;font-size:10px}.count-display{width:100%;height:60px;border:1px solid #c3d0b7;border-radius:9px;background:#fafcf6;color:#425c35;font-size:30px;text-align:center;letter-spacing:2px;font-weight:600}.count-display::placeholder{color:#cad3bf}.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.numpad button{min-height:45px;border:1px solid #e6ebdd;border-radius:8px;background:#f5f7f0;color:#536a43;font-size:21px;font-weight:500}.numpad button:active{background:#dce8cc}.modal-buttons{display:flex;gap:9px;margin-top:17px}.modal-buttons .button{flex:1;padding-left:9px;padding-right:9px}.modal-footnote{font-size:9px;text-align:center;color:#acb59d;line-height:1.7;margin-top:12px}.unexpected{display:flex;gap:8px;background:#fff4e9;color:#b88858;border:1px solid #efdcc4;border-radius:8px;padding:12px;font-size:11px;margin-bottom:17px}.unexpected p{font-size:10px;line-height:1.7;margin:5px 0 10px;color:#b39a7c}.unexpected label{display:flex;align-items:flex-start;gap:6px;line-height:1.7;font-size:11px}.unexpected input{width:19px;height:19px;accent-color:var(--green);margin:0;flex-shrink:0}.help-modal{max-width:450px}.help-modal h2{font-size:22px;margin-bottom:22px}.help-step{display:flex;gap:14px;margin:19px 0;align-items:center}.help-step>b{font-size:10px;color:#9bac8b;border:1px solid #dce5d1;border-radius:5px;padding:6px}.help-step p{font-size:13px;color:#7b8a6d;line-height:1.7}.setup-note{background:#f2f5ec;border:1px solid #e4eadb;padding:15px;border-radius:9px;margin:25px 0 16px}.setup-note h3{font-size:12px;margin-bottom:9px;color:#7e936b}.setup-note p,.help-small{font-size:11px;line-height:1.9;color:#9ba58d;margin-top:6px}.help-small{margin-bottom:20px}.full-width{width:100%}.spinning svg{animation:spin 1.2s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+@media(min-width:1500px){.workspace{padding-top:54px}.empty-state{padding-top:80px;padding-bottom:90px}}@media(max-width:1180px){.workspace{margin:0 28px}.topbar{padding:0 28px}.main-grid{gap:20px;grid-template-columns:minmax(0,1fr) 270px}}@media(max-width:780px){.topbar{height:68px;padding:0 18px}.brand{font-size:13px}.brand-mark{width:36px;height:36px}.brand-sub{font-size:7px}.device-tag{display:none}.header-right{gap:4px}.workspace{margin:0 18px;padding-top:27px}.page-heading{margin-bottom:22px}.page-heading h1{font-size:27px}.eyebrow{font-size:8px;letter-spacing:1.6px}.page-heading p{font-size:11px}.connection{font-size:9px;padding:6px 9px}.main-grid{grid-template-columns:1fr;gap:20px}.sidebar{gap:16px}.guide-card{display:none}.location-card,.scan-card{padding:22px}.location-row{gap:9px}.location-field{padding:0 11px;gap:8px}.location-field input{font-size:18px;height:52px}.location-row>.button{padding:12px 16px;font-size:12px}.source-card{padding:18px 21px}.source-name{margin-top:14px}.source-details{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-top:15px;padding-top:10px}.source-details>div{font-size:10px}.source-details>div:last-child{display:none}.micro-copy{margin-top:5px}.snapshot-note{display:none}.empty-state{padding:43px 0 47px}.empty-state h2{font-size:16px}.empty-state p{font-size:11px}.task-actions{bottom:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}.result-header{padding:20px}.stat-grid{padding:0 19px 18px}.list-toolbar{padding:7px 20px}.result-list{padding:0 20px}footer{margin-top:25px;flex-direction:column;gap:10px;padding-bottom:12px}.active-location{font-size:23px;gap:10px}.scan-hint{font-size:9px}.scan-hint .text-button{font-size:10px}.modal-backdrop{padding:14px}.count-modal{padding:22px}.modal-top{margin-bottom:10px}.confirmed-sku{padding:11px 0 13px}.count-modal h2{font-size:22px}.count-modal .modal-top{margin-bottom:10px}.numpad button{min-height:47px}.help-modal{padding:23px}}
+@media(max-width:370px){.workspace{margin:0 13px}.page-heading h1{font-size:24px}.connection{font-size:8px}.location-card,.scan-card{padding:18px}.location-row>.button{padding:12px;font-size:11px;gap:5px}.location-field input{font-size:16px}.brand-sub{font-size:6px}.count-modal{padding:18px}.count-modal h2{font-size:20px}.modal-scan-icon{width:35px;height:35px}.confirmed-sku>strong{font-size:23px}.confirmed-sku p{font-size:10px}.numpad button{min-height:40px}.count-display{height:50px}.modal-buttons .button{min-height:47px;font-size:12px}.modal-footnote{font-size:8px}.scan-hint{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+/* Readable supporting text on warehouse handhelds. */
+.location-note,.sku-label,.scan-hint,.micro-copy,.help-small,.setup-note p,.guide-card li p{color:#7e8975}
+.source-name span,.source-details span,.source-details strong,.guide-card li strong{color:#78866e}
+.quantities{color:#7c886f}.quantities b{color:#506945}.result-badge.waiting{color:#788769}.empty-state p{color:#7d8973}
+@media(max-width:780px){.location-note,.sku-label,.scan-hint,.scan-hint .text-button,.quantities,.quantities .difference,.result-badge{font-size:11px}.quantities b{font-size:14px}.source-details>div,.micro-copy{font-size:11px}.source-name span{font-size:10px}.field-label{font-size:13px}.task-actions .button{font-size:15px}.modal-footnote{font-size:10px}.confirmed-sku p{font-size:12px}.count-modal .field-label{font-size:13px}.help-small,.setup-note p{font-size:12px}.connection{font-size:10px}.count-modal .modal-buttons .button{font-size:14px}}
+
+[hidden]{display:none!important}.scan-receipt{margin-top:10px;padding:10px 12px;border-radius:7px;background:#f2f5ed;color:#728468;font-size:11px;line-height:1.7;overflow-wrap:anywhere}.brand-mark{font-size:26px}.icon-button{font-size:22px}.modal-scan-icon{font-size:25px}.barcode-field>span{font-size:25px;color:#799767}.scan-submit{font-size:25px}.location-field>span{font-size:25px;color:#a5ae9f}.result-badge,.scan-receipt{letter-spacing:0}.row-actions button{font-size:20px}#boot-warning{flex-wrap:wrap}#boot-warning a{color:inherit}.modal-backdrop{padding-top:14px;padding-bottom:14px}.scan-card{scroll-margin-top:15px}
+
+.manual-entry{margin-top:19px;padding:16px;background:#f7f8f2;border:1px solid #dce4d4;border-radius:10px}.manual-entry>.field-label{font-size:13px;color:#415d36;line-height:1.6;margin-bottom:10px}.manual-row{display:flex;gap:9px;align-items:stretch}.manual-row input{flex:1;width:100%;min-width:0;border:1px solid #b7c7aa;background:#fff;border-radius:8px;min-height:51px;font-size:21px;padding:10px 12px;color:#253d22}.manual-row input:focus{outline:3px solid #c1d5b4}.manual-row .button{flex-shrink:0;padding:11px 16px;font-size:13px}.manual-entry>p{font-size:11px;line-height:1.8;color:#7e8d73;margin-top:10px}
+
+.counter-note{padding:11px 0 0;font-size:12px;color:#607c51}.counter-note strong{font-size:18px;color:#28664c;margin:0 4px}.invalid-code-card{border:2px solid #d58859}.invalid-mark{display:grid;place-items:center;background:#fff0e5;border:1px solid #e9ba9c;border-radius:50%;width:44px;height:44px;font-size:29px;font-weight:700;color:#b56035}.invalid-code-card h2{color:#9d4928;line-height:1.5}.invalid-explanation{font-size:14px;line-height:1.9;color:#8f684d;margin:16px 0}.invalid-explanation strong{color:#b4542d}.invalid-value{font-size:12px;overflow-wrap:anywhere;padding:13px;border-radius:8px;background:#fff5ec;color:#aa7352}.not-counted{font-size:13px;color:#a05234;line-height:1.8;margin:13px 0 20px}.retry-barcode{width:100%;min-height:53px;border:1px solid #c5d1bc;border-radius:9px;padding:12px;margin:0 0 18px;font-size:18px;color:#3b5932}.retry-barcode:focus{outline:3px solid #d8e6ce}
+
+/* Highlight only actual differences; unscanned items stay neutral until completion. */
+.sku-row.has-difference .sku-number,.sku-row.has-difference .sku-label,.sku-row.has-difference .quantities,.sku-row.has-difference .quantities b,.sku-row.has-difference .difference,.sku-row.has-difference .result-badge{color:#bf1e2e;font-weight:750}.sku-row.has-difference .result-badge{background:#fff0f1;border:1px solid #f1c9ce}.stat .stat-red{color:#bf1e2e;font-weight:800}.stat.stat-difference>span{color:#bf1e2e;font-weight:750}.finished-banner.has-difference{color:#bf1e2e;background:#fff0f1}.finished-banner.has-difference strong,.finished-banner.has-difference p{color:#bf1e2e;font-weight:750}.message.error{color:#bf1e2e;font-weight:700}.other-locations-note{background:#f6f7f0;border:1px solid #e3e9d9;border-radius:8px;margin-top:12px;padding:12px 13px;color:#56684b;line-height:1.9;overflow-wrap:anywhere}.other-locations-note>strong{font-size:11px;display:block;color:#6e805e;font-weight:650;margin-bottom:4px}.other-locations-note>p{font-size:12px;color:#435e34;font-weight:500}.other-locations-note>small{font-size:10px;display:block;color:#89967c;margin-top:6px}@media(max-width:780px){.other-locations-note>p{font-size:12px}.other-locations-note>strong{font-size:11px}}
+
+.language-toggle{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d6e0d0;background:#f4f7ef;color:#365f2b;border-radius:7px;font-size:12px;font-weight:700;min-height:35px;min-width:68px;padding:7px 10px}.language-toggle:hover{background:#e9f0e0}html[lang="en"] .section-kicker{letter-spacing:0}html[lang="en"] .location-note{line-height:1.7}html[lang="en"] .page-heading h1{font-size:29px}html[lang="en"] .stat span{font-size:10px;line-height:1.5;text-align:center}html[lang="en"] .manual-row .button{white-space:normal}@media(max-width:780px){.language-toggle{min-width:63px;padding:7px 8px}.header-right{gap:3px}html[lang="en"] .page-heading{align-items:flex-start;gap:9px}html[lang="en"] .page-heading h1{font-size:24px}html[lang="en"] .connection{white-space:normal;max-width:110px;font-size:9px;line-height:1.5}html[lang="en"] .location-row>.button{font-size:12px;white-space:normal;min-width:100px;max-width:126px;padding:10px}html[lang="en"] .active-location{flex-wrap:wrap;gap:7px}html[lang="en"] .manual-entry>.field-label{font-size:12px}html[lang="en"] .scan-hint{align-items:flex-start;flex-wrap:wrap}html[lang="en"] .task-actions .button{font-size:13px}html[lang="en"] .modal-buttons .button{font-size:13px;white-space:normal}}@media(max-width:370px){.brand{font-size:11px;letter-spacing:.8px}.brand-mark{width:30px;height:32px}.brand-sub{display:none}.topbar{padding:0 12px;gap:8px}.brand{gap:7px}.header-right{gap:1px}.language-toggle{min-width:61px}.header-right .icon-button{width:30px}html[lang="en"] .page-heading h1{font-size:22px}}
+
+.cloud-card{padding:22px;margin-top:18px}.cloud-card .result-header{padding:0;gap:16px;flex-wrap:wrap}.cloud-card h2{font-size:18px}.upload-status{margin:16px 0;color:#526259;line-height:1.6}.upload-status.uploaded{color:#246b49;font-weight:700}.upload-error{color:#a83b30;font-weight:700}.upload-actions{display:flex;gap:10px;flex-wrap:wrap}.profile-input{display:block;width:100%;padding:13px;border:1px solid #ccd8ce;border-radius:9px;font:inherit;background:white;margin-bottom:18px}.cloud-card .micro-copy{margin-top:14px;line-height:1.6}
+
+.location-picker{position:relative;flex:1;min-width:0}.location-suggestions{position:absolute;z-index:12;top:calc(100% + 5px);left:0;right:0;max-height:260px;overflow:auto;background:#fff;border:1px solid #c7d6bd;border-radius:9px;box-shadow:0 8px 22px #20332d24;padding:5px}.location-option{display:block;width:100%;text-align:left;border:0;background:white;border-radius:6px;padding:11px 14px;color:#284b34;font-size:16px;min-height:43px;font-variant-numeric:tabular-nums}.location-option:hover,.location-option.active{background:#eaf2e2}.quantity-entry{align-items:flex-end;flex-wrap:wrap}.quantity-entry>label{display:block;min-width:0}.manual-sku-label{flex:1 1 115px}.manual-quantity-label{flex:0 1 140px}.quantity-entry label>span{display:block;font-size:12px;line-height:1.6;margin-bottom:6px;color:#566c49}.quantity-entry input{width:100%;min-width:0}.quantity-entry .button{min-height:51px}.cin7-plan{font-size:11px;line-height:1.8;margin-top:14px;color:#7e8d73;padding-top:12px;border-top:1px solid #e5e8e0}.cin7-pending{display:block;margin-top:7px;font-size:11px!important;white-space:normal;text-align:left}.cin7-pending:disabled{opacity:.7;cursor:default}@media(max-width:480px){.manual-quantity-label{flex:1 1 95px}.quantity-entry .button{width:100%}.location-suggestions{max-height:220px}}
+
+.cin7-modal-card{max-width:880px;width:100%;padding:24px}.cin7-modal-card h2{margin-bottom:10px}.cin7-modal-card .sku-label{font-size:14px;overflow-wrap:anywhere;margin-bottom:12px}.cin7-context{font-size:13px;line-height:1.9;color:#5c7050;margin-bottom:15px}.cin7-current{font-size:14px;font-weight:700;margin:14px 0;color:#365d30}.cin7-table-wrap{width:100%;overflow:auto;max-height:330px}.cin7-table{width:100%;min-width:550px;border-collapse:collapse;font-size:12px}.cin7-table th,.cin7-table td{padding:10px 9px;text-align:left;border-bottom:1px solid #e1e8da;white-space:nowrap}.cin7-table th{background:#f0f5e9;font-weight:600}.cin7-current-row{background:#eaf3e2;font-weight:700}.cin7-footnote{font-size:11px;line-height:1.9;color:#7a8c6e;margin-top:18px}.cin7-lookup{display:block;margin:9px 0;font-size:12px!important;text-align:left;white-space:normal}.cin7-lookup:disabled{opacity:.6;cursor:default}#cin7-loading{padding:20px 0;color:#466b3b}.cin7-modal-card .micro-copy{line-height:1.8}
+
+.cin7-adoption{padding:15px;background:#f0f6e9;border:1px solid #dce8cf;border-radius:9px;margin-top:18px}.cin7-adoption p{font-size:12px;line-height:1.8;color:#586f48;margin:0 0 12px}.cin7-adoption label{display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:1.8;margin-bottom:12px}.cin7-adoption input{width:20px;height:20px;accent-color:#28664c;flex-shrink:0}.cin7-adoption .button{width:100%;white-space:normal}.baseline-origin-note{font-size:11px;line-height:1.8;color:#53703e;background:#f0f6e8;border:1px solid #e0e9d4;padding:8px 10px;border-radius:7px;margin:8px 0;overflow-wrap:anywhere}
+
+/* Device-local completed locations: two rows, expandable in the page. */
+.location-history{margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #e5e8e0}
+.location-history .field-label{margin-bottom:7px}
+.completed-locations{display:flex;flex-wrap:wrap;align-content:flex-start;gap:4px 8px;max-height:calc(3.2em + 4px);overflow:hidden;font-size:12px;font-weight:600;line-height:1.6;color:#46584c;scrollbar-width:thin;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+.completed-location{flex:none;max-width:100%;overflow-wrap:anywhere;background:#eef3e9;border-radius:3px;padding:0 5px}
+.completed-empty{font-weight:400;color:#758174}
+.completed-locations:focus-visible{outline:2px solid #6b8c64;outline-offset:3px}
+@media(max-width:780px){.page-heading h1,html[lang="en"] .page-heading h1{font-size:21px;line-height:1.3}.completed-locations{font-size:13px}.page-heading{padding-top:4px;padding-bottom:4px}}
+@media(max-width:370px){.page-heading h1,html[lang="en"] .page-heading h1{font-size:20px}}
+
+.completed-locations.expanded{max-height:none;overflow:visible}
+.location-history-toggle{display:inline-flex;align-items:center;gap:9px;border:0;background:transparent;color:#46584c;font-size:12px;font-weight:600;padding:9px 2px 2px;cursor:pointer}
+.location-history-toggle[hidden]{display:none}
+.history-chevron{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-4px}
+.location-history-toggle[aria-expanded="true"] .history-chevron{transform:rotate(225deg);margin-top:4px}
+@media(max-width:780px){.location-history-toggle{font-size:13px;min-height:32px}}
+
+.replacement-row .sku-number{display:block;min-width:0;overflow-wrap:anywhere}.replacement-row .result-badge{flex-shrink:0}.confirmed-sku strong.replacement-sku{display:block;font-size:20px;line-height:1.5;overflow-wrap:anywhere}
+/* Compact handheld layout approved in the mobile preview. */
+.mobile-title,.mobile-sync{display:none}
+.manual-modes{display:flex;gap:18px;margin-bottom:10px}
+.manual-modes button{border:0;border-bottom:2px solid transparent;background:transparent;color:#65756b;padding:7px 1px;font-size:14px;min-height:36px}
+.manual-modes button[aria-pressed="true"]{color:#28664c;border-color:#28664c;font-weight:700}
+.report-disclosure>summary{display:none}
+@media(max-width:780px){
+ :root{--bg:#f6f7f4;--ink:#193d36}
+ body{font-size:14px}
+ .topbar{height:50px;padding:0 12px;gap:10px}
+ .brand{font-size:12px;letter-spacing:0;gap:0;flex-shrink:0}
+ .brand-mark,.brand-sub,.device-tag,.page-heading,.header-right #sound{display:none}
+ .mobile-title{display:block;font-size:17px;font-weight:700;border-left:1px solid #d5ded7;padding-left:10px;white-space:nowrap;margin-right:auto}
+ .header-right{gap:2px}
+ .language-toggle{background:transparent;border:0;min-width:36px;min-height:40px;padding:6px;font-size:12px}
+ .header-right .icon-button{width:32px;height:40px;font-size:20px}
+ .workspace{padding:0 0 12px;margin:0 10px;max-width:none}
+ .mobile-sync{display:flex;align-items:center;gap:4px;min-height:34px;font-size:12px;color:#526b5b;padding:0 2px}
+ .mobile-sync #mobile-sync-text{flex:1;min-width:0}
+ .mobile-sync .icon-button{height:32px;width:32px;font-size:21px;color:#537d59}
+ .mobile-sync .text-button{font-size:12px;min-height:32px;color:#526b5b}
+ #mobile-source-error{margin:0 0 8px;font-size:13px;line-height:1.6}
+ .main-grid{display:block}
+ .primary-area{min-width:0}
+ .card{border-radius:9px;box-shadow:none}
+ .location-card{padding:10px 12px;margin-bottom:10px}
+ .location-history{position:relative;margin-bottom:10px;padding-bottom:9px}
+ .location-history .field-label{margin:0 55px 7px 0;font-size:13px;line-height:1.6}
+ .location-history-toggle{position:absolute;right:0;top:-5px;font-size:12px;min-height:32px;padding:4px 1px;gap:6px}
+ .location-history-toggle-label{font-size:12px}
+ .completed-locations{gap:4px 8px;font-size:13px;line-height:1.6}
+ .completed-location{border-radius:5px;padding:0 8px}
+ .location-card>.section-kicker,.location-card>label,.location-note{display:none}
+ .location-row{gap:8px}
+ .location-field{padding:0 10px;gap:0;border-radius:7px}
+ .location-field>span{display:none}
+ .location-field input{font-size:18px;height:44px}
+ .location-row>.button,html[lang="en"] .location-row>.button{font-size:14px;min-height:44px;padding:10px 12px;min-width:88px;max-width:115px;border-radius:7px}
+ #location-issue{font-size:13px;line-height:1.6;margin-top:8px}
+ .scan-card{padding:11px 12px;margin-bottom:10px}
+ .scan-card-header .section-kicker{display:none}
+ .active-location{margin:0;font-size:20px;line-height:1.4;gap:8px}
+ .pill{font-size:11px;padding:3px 6px}
+ .scan-progress strong{font-size:15px;line-height:1.4}
+ .scan-progress strong span{font-size:14px;color:#36594c;font-weight:600}
+ .scan-progress small{font-size:11px;color:#61786a}
+ .progress-track{margin:9px 0;height:3px}
+ #scan-form>.field-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .barcode-field{min-height:44px;border-radius:7px}
+ .barcode-field input{font-size:16px;min-width:0;height:44px;padding:8px}
+ .barcode-field>span{font-size:20px;margin-left:8px}
+ .scan-submit{height:42px;width:42px;font-size:23px}
+ .scan-hint,html[lang="en"] .scan-hint{margin-top:5px;font-size:12px;gap:6px;align-items:center;flex-wrap:nowrap;line-height:1.5}
+ .scan-hint .text-button{font-size:12px;min-height:32px;flex-shrink:0}
+ .counter-note{font-size:12px;padding-top:0;line-height:1.5}
+ .counter-note strong{font-size:14px;margin:0 2px}
+ .scan-receipt{font-size:12px;line-height:1.5;margin-top:4px;padding:0;background:transparent;color:#5e7463;max-height:36px;overflow:auto}
+ .manual-entry{border:0;border-top:1px solid #e2e9e1;background:transparent;border-radius:0;padding:8px 0 0;margin-top:9px}
+ .manual-entry>#manual-heading,.manual-entry>p{display:none}
+ .manual-modes{gap:20px;margin:0 0 7px}
+ .manual-modes button{font-size:13px;min-height:34px;padding:5px 1px}
+ .quantity-entry{display:grid;grid-template-columns:minmax(0,1fr) 66px 66px;align-items:end;gap:8px}
+ .quantity-entry>label{width:100%;min-width:0;display:block}
+ .quantity-entry label>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .manual-row input{font-size:16px;height:44px;min-height:44px;padding:8px 10px;border-radius:7px}
+ .manual-quantity-label input{text-align:center}
+ .quantity-entry .button,.manual-row .button{width:100%;min-height:44px;font-size:14px;padding:8px;border-radius:7px}
+ .result-card{display:flex;flex-direction:column;overflow:hidden;margin-bottom:0}
+ .result-header{padding:8px 12px;gap:8px;min-height:40px}
+ .result-header h2{font-size:15px;margin-right:auto;white-space:nowrap}
+ .result-header .text-button{font-size:12px;min-height:32px;color:#466e53}
+ .stat-grid{order:-1;padding:8px 10px;gap:0;background:#f3f6f1;border-bottom:1px solid #e1e8de}
+ .stat{padding:4px 2px;border-radius:0;min-height:46px;border:0;background:transparent;box-shadow:none}
+ .stat+.stat{border-left:1px solid #dbe4d7}
+ .stat strong{font-size:18px;line-height:1.3}
+ .stat span,html[lang="en"] .stat span{font-size:12px;line-height:1.4;color:#4a5d50}
+ .list-toolbar{display:none}
+ .result-list{padding:0 12px}
+ .sku-row{padding:10px 0}
+ .sku-number{font-size:16px;line-height:1.4}
+ .sku-label{font-size:12px;line-height:1.5;margin:2px 0 5px;color:#637568}
+ .result-badge{font-size:11px;padding:3px 5px}
+ .quantities{font-size:13px;gap:10px;flex-wrap:wrap;color:#52694f}
+ .quantities b{font-size:14px}
+ .quantities .difference{font-size:13px}
+ .row-actions{gap:5px}
+ .row-actions button{width:36px;height:36px;font-size:20px;color:#517343}
+ .other-locations-note{padding:7px 9px;margin-top:6px;font-size:12px;line-height:1.5}
+ .other-locations-note>strong,.other-locations-note>p{font-size:12px;line-height:1.6;margin:0}
+ .other-locations-note>small{font-size:11px;line-height:1.5;margin-top:3px}
+ .cin7-lookup{min-height:34px;margin:3px 0}
+ .baseline-origin-note{padding:6px 8px;font-size:12px}
+ .task-actions{padding:8px 0;background:var(--bg);bottom:0;margin:0;z-index:5}
+ .task-actions>.button{height:46px;min-height:46px;font-size:15px;border-radius:7px}
+ .report-disclosure{border:1px solid #e1e7dd;border-radius:8px;background:#fff;margin-bottom:10px}
+ .report-disclosure>summary{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:42px;padding:8px 12px;font-size:12px;color:#536b5c;cursor:pointer;list-style:none}
+ .report-disclosure>summary::after{content:'⌄';font-size:18px}
+ .report-disclosure[open]>summary::after{content:'⌃'}
+ .report-disclosure>summary::-webkit-details-marker{display:none}
+ #report-summary-status{margin-left:auto;white-space:nowrap}
+ .report-disclosure .cloud-card{border:0;border-top:1px solid #e1e7dd;border-radius:0;margin:0;padding:12px}
+ .cloud-card .result-header{min-height:0;padding:0;gap:8px}
+ .cloud-card h2{font-size:15px}
+ .cloud-card .upload-status{font-size:13px;margin:10px 0}
+ .cloud-card .micro-copy{font-size:12px;line-height:1.6;margin-top:8px}
+ .upload-actions .button{font-size:13px;min-height:42px;padding:8px 12px}
+ .sidebar{display:none}
+ .mobile-stock-open .sidebar{display:block;margin-top:10px}
+ .source-card{padding:12px}
+ .empty-state{padding:22px 8px 28px}
+ .empty-illustration{display:none}
+ .empty-state h2{font-size:16px}
+ .empty-state p{font-size:13px;line-height:1.7}
+ .empty-steps{margin-top:14px;font-size:12px}
+ footer{margin-top:12px;padding-top:10px;gap:4px;font-size:11px;line-height:1.5}
+ .finished-banner{padding:10px 12px;margin-top:10px}
+ .finished-banner strong{font-size:16px}
+ .finished-banner p{font-size:13px;line-height:1.6}
+}
+@media(max-width:370px){.topbar{padding:0 10px;gap:7px}.brand{font-size:11px}.mobile-title{font-size:16px;padding-left:7px}.header-right .icon-button{width:28px}.workspace{margin:0 8px}.location-card,.scan-card{padding:10px}.quantity-entry{grid-template-columns:minmax(0,1fr) 58px 60px;gap:6px}.completed-location{padding:0 6px}}
+
+@media(max-width:780px){.message{padding:8px 10px;margin:0 0 8px;font-size:13px;line-height:1.5;gap:6px}.scan-receipt{max-height:18px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.scan-hint{min-height:28px}.scan-card .barcode-field{height:44px}.location-history .completed-locations{line-height:1.6}.report-disclosure summary:focus-visible{outline:2px solid #88bca0}}
+
+@media(max-width:780px){.scan-feedback-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.scan-feedback-row .scan-hint{margin:0;min-height:30px;font-size:12px}.scan-feedback-row #manual{display:none}.scan-feedback-row .counter-note{white-space:nowrap;font-size:12px}.manual-entry{margin-top:4px;padding-top:4px}.manual-modes button{min-height:30px}.manual-modes{margin-bottom:5px}.stat-grid{padding:6px 10px}.stat{height:44px;min-height:44px;padding:2px}.stat strong{margin:0;line-height:1.2}.stat span{margin:0}.scan-card-header{min-height:30px}.location-card,.scan-card{margin-bottom:8px}.result-card .result-header h2{gap:5px}}
+
+@media(max-width:780px){.location-card>label{display:block;position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}}
+
+@media(max-width:780px){.header-right #sound{display:inline-flex;width:28px;font-size:18px}}
+</style></head><body><div class="app-shell">
+<header class="topbar"><a class="brand" href="manager.html" aria-label="库位核对首页"><span class="brand-mark">▥</span><span>URBANSALES<span class="brand-sub">WAREHOUSE TOOLS</span></span></a><h1 class="mobile-title">库位核对</h1><div class="header-right"><span class="device-tag">DT50 READY</span><button id="language-toggle" class="language-toggle" type="button" data-language-control aria-label="Switch to English / 切换到英文">English</button><button id="sound" class="icon-button" aria-label="关闭错误提示音">♪</button><button id="help" class="icon-button" aria-label="查看操作帮助">?</button></div></header>
+<main class="workspace"><div class="mobile-sync"><span id="mobile-sync-text" role="status">正在读取库存…</span><button id="mobile-refresh" class="icon-button" type="button" aria-label="刷新库存">↻</button><button id="mobile-stock-details" class="text-button" type="button" aria-expanded="false" aria-controls="stock-sidebar">库存详情</button></div><p id="mobile-source-error" class="message error" role="alert" hidden></p><div class="page-heading"><div><div class="eyebrow">STOCK VERIFICATION</div><h1>库位扫描核对<span class="heading-dot">.</span></h1><p>一个库位，一次核清。</p></div><div id="connection" class="connection"><span class="status-dot"></span><span id="connection-text">页面正在启动</span></div></div>
+<div id="boot-warning" class="message error">如果此提示一直没有消失，说明页面程序未能启动，请使用下方「重新加载修复版」入口。<a href="/?v=18" style="text-decoration:underline">重新加载修复版</a></div><noscript><div class="message error">浏览器需要启用 JavaScript 才能接收扫码。请让设备管理员检查浏览器设置。</div></noscript>
+<div id="notice" class="message" role="status" hidden><span id="notice-text"></span><button class="icon-button" id="dismiss" aria-label="关闭提示">×</button></div>
+<div class="main-grid"><section class="primary-area">
+<section class="card location-card"><div class="location-history"><div class="field-label" id="completed-locations-label">本设备已核对库位</div><div id="completed-locations" class="completed-locations" role="region" aria-labelledby="completed-locations-label" data-no-translate></div><button id="location-history-toggle" class="location-history-toggle" type="button" aria-controls="completed-locations" aria-expanded="false" hidden><span id="location-history-toggle-label">展开全部已核对库位</span><span class="history-chevron" aria-hidden="true"></span></button><p id="location-history-error" class="micro-copy" role="alert" hidden>已核对库位记录未能保存，请保留当前页面并检查设备存储空间。</p></div><div class="section-kicker"><span class="step-number">01</span>选择库位</div><label class="field-label" for="location">输入 Location</label><div class="location-row"><div class="location-picker"><div class="location-field"><span aria-hidden="true">⌖</span><input id="location" role="combobox" aria-autocomplete="list" aria-controls="location-suggestions" aria-expanded="false" placeholder="例如 A01-01" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><div id="location-suggestions" class="location-suggestions" role="listbox" aria-label="匹配的库位" data-no-translate hidden></div></div><button id="start" class="button primary" disabled>开始核对 →</button></div><div class="location-note"><span id="location-note">输入 A01 可选择匹配库位；选好后点击开始核对。</span></div><p id="location-issue" class="message error compact" role="alert" hidden></p></section>
+<section id="empty" class="empty-state"><div class="empty-illustration"><div class="scan-corners"></div><span style="font-size:56px">▧</span><span class="scan-beam"></span></div><h2>准备好，开始第一个库位</h2><p>输入库位后，按扫描键读取商品条码。<br>每件商品扫描一次，系统自动保存并累计数量。</p><div class="empty-steps"><span>输入库位</span>→<span>扫描商品</span>→<span>查看结果</span></div></section>
+<div id="task" hidden><section class="card scan-card"><div class="scan-card-header"><div><div class="section-kicker"><span class="step-number">02</span><span id="scan-title">扫描商品</span></div><div class="active-location"><span id="active-location"></span><span id="phase" class="pill green"></span></div></div><div class="scan-progress"><strong><span id="scanned-count">0</span><span id="expected-count"></span></strong><small>应有 SKU 已记录</small></div></div><div class="progress-track"><span id="progress"></span></div>
+<div id="scan-form"><label for="barcode" class="field-label">商品数字 SKU</label><div class="barcode-field"><span aria-hidden="true">▥</span><input id="barcode" placeholder="等待扫描 SKU…" inputmode="none" virtualkeyboardpolicy="manual" autocomplete="off" spellcheck="false" autocapitalize="off"><button id="scan-submit" class="scan-submit" aria-label="识别条码">→</button></div><div class="scan-feedback-row"><div class="scan-hint"><span id="scan-hint">每扫一次 +1 · 自动保存</span><button id="manual" class="text-button">手动输入</button></div><div class="counter-note">累计 <strong id="total-count">0</strong> 件</div></div><div class="scan-receipt" id="scan-receipt" hidden>尚未收到条码输入。若设备响了但这里没变化，请点右上角「?」检查键盘输出。</div><section class="manual-entry" aria-labelledby="manual-heading"><h3 class="field-label" id="manual-heading">手动输入 SKU 和数量</h3><div class="manual-modes" role="group" aria-label="SKU 输入类型"><button id="manual-numeric-mode" type="button" aria-pressed="true">普通 SKU</button><button id="manual-special-mode" type="button" aria-pressed="false">特殊 SKU</button></div><div class="manual-row quantity-entry"><label class="manual-sku-label" for="manual-sku"><span id="manual-sku-label">数字 SKU</span><input id="manual-sku" placeholder="数字 SKU" type="text" inputmode="numeric" autocomplete="off" spellcheck="false"></label><label class="manual-quantity-label" for="manual-quantity"><span>数量（可填 0）</span><input id="manual-quantity" value="1" type="text" inputmode="decimal" autocomplete="off" spellcheck="false"></label><button id="manual-submit" class="button primary">保存</button></div><p>输入 4 / 5 位数字 SKU 或包含 Replacement 的完整 SKU，再填写数量保存。正数累加；输入 0 表示确认该 SKU 在本库位无实物，并将实点数量设为 0。</p></section></div>
+<div id="finished-banner" class="finished-banner" hidden><div><strong id="finish-title"></strong><p id="finish-note"></p></div></div></section>
+<section class="card result-card"><div class="result-header"><h2>核对明细 <span id="row-count"></span></h2><button id="filter" class="text-button">只看差异</button><button id="export" class="text-button">↓ 导出报告</button></div><div id="stats" class="stat-grid"></div><div class="list-toolbar"><span id="list-caption"></span></div><div id="results" class="result-list"></div></section>
+<div class="task-actions"><button id="finish" class="button primary">✓ 完成本轮核对</button><button id="resume" class="button primary" hidden>↶ 继续补扫 · 保留原记录</button></div><details id="report-disclosure" class="report-disclosure" open><summary><span>云端报告与上传设置</span><span id="report-summary-status"></span></summary><section id="cloud-report" class="card cloud-card" hidden><div class="result-header"><h2>云端报告</h2><button id="upload-profile-button" class="text-button">设置操作者 / 扫描器名称</button></div><p id="upload-status" class="upload-status" role="status"></p><p id="upload-queue-note" class="micro-copy" hidden></p><div class="upload-actions"><button id="upload-report" class="button primary">↑ 上传报告</button><button id="upload-retry" class="button secondary" hidden>重试待上传报告</button></div><p class="micro-copy">首次填写操作者和扫描器名称，之后完成核对自动上传。补扫完成后会生成新报告，保留历史版本。</p></section></details></div>
+</section><aside id="stock-sidebar" class="sidebar"><section class="card source-card"><div class="aside-title"><span class="small-dot"></span><h2>库存同步</h2><button id="refresh" class="icon-button" aria-label="刷新库存">↻</button></div><div class="source-name"><div class="sheets-icon">▤</div><div><strong>Google 库存表</strong><span>自动同步 · 每 30 分钟</span></div></div><div id="source-error" class="source-error" hidden></div><div class="source-details"><div><span>数量基准</span><strong>G 列 · Available</strong></div><div><span>最近读取</span><strong id="source-time">正在读取…</strong></div><div><span>可用库位</span><strong id="source-bins">—</strong></div></div><p class="micro-copy">读取时间不代表上游报表的业务更新时间。</p><div id="snapshot-note" class="snapshot-note" hidden></div><p class="cin7-plan" id="cin7-config-note">Cin7 按差异 SKU 辅助查询 · 待配置。Google 报表仍作为盘点基准。</p></section><section class="guide-card"><div class="eyebrow">QUICK GUIDE</div><h2>让每次核对，都简单一点。</h2><ol><li><span>1</span><div><strong>逐件扫描</strong><p>只扫描包装上的 4 / 5 位数字 SKU。工厂长条码会被拦截。</p></div></li><li><span>2</span><div><strong>自动保存计数</strong><p>同一 SKU 每扫一次加 1，无需确认数量。请避免重扫同一件。</p></div></li><li><span>3</span><div><strong>差异随时补核</strong><p>完成后可继续补扫，已有记录自动保留。</p></div></li></ol><button id="guide-help" class="text-button">首次使用 DT50？ →</button></section></aside></div>
+<footer><span>扫描记录本机保存 · 完成报告可上传共享</span><span>URBANSALES · 逐件计数版 v20</span></footer></main>
+<div id="cin7-modal" class="modal-backdrop" hidden><section class="help-modal cin7-modal-card" role="dialog" aria-modal="true" aria-labelledby="cin7-heading"><div class="modal-top"><span class="eyebrow">CIN7 CORE · LIVE STOCK</span><button id="cin7-close" class="icon-button" aria-label="关闭 Cin7 校对">×</button></div><h2 id="cin7-heading">Cin7 实时校对</h2><p class="sku-label" id="cin7-sku-label"></p><p id="cin7-context" class="cin7-context"></p><p id="cin7-loading" role="status">正在查询 Cin7，请稍候…</p><p id="cin7-error" class="message error" role="alert" hidden></p><div id="cin7-result" hidden><p id="cin7-fetched" class="micro-copy"></p><p id="cin7-current" class="cin7-current"></p><div class="cin7-table-wrap"><table class="cin7-table"><thead><tr><th>仓库 / Location</th><th>库位 / Bin</th><th>可用 / Available</th><th>在库 / On Hand</th><th>已分配 / Allocated</th><th>在订 / On Order</th></tr></thead><tbody id="cin7-rows" data-no-translate></tbody></table></div><p id="cin7-empty" class="micro-copy" hidden>Cin7 未返回该 SKU 的库存记录。请核对完整 SKU；这不代表实物库存一定为 0。</p><p id="cin7-limited" class="micro-copy" hidden>页面仅显示前 200 个库位，当前库位优先。请在 Cin7 查看其余记录。</p></div><div class="cin7-adoption"><label id="cin7-zero-label" hidden><input id="cin7-zero" type="checkbox">我已确认该库位该 SKU 的实物数量为 0</label><p id="cin7-adopt-note"></p><button id="cin7-adopt" class="button primary" disabled>实物一致，采用 Cin7 基准</button></div><p class="cin7-footnote">查询本身不改动数据。采用后仅更新本 SKU 的核对基准，保留原 Google 数量；不会回写 Google 或 Cin7 库存。</p><div class="modal-buttons"><button id="cin7-back" class="button secondary">返回扫描</button><button id="cin7-retry" class="button primary">再次查询 Cin7</button></div></section></div><div id="report-profile-modal" class="modal-backdrop" hidden><section class="help-modal" role="dialog" aria-modal="true" aria-labelledby="report-profile-heading"><div class="eyebrow">REPORT UPLOAD</div><h2 id="report-profile-heading">报告署名设置</h2><p>每台设备首次填写一次。管理者可以按操作者或扫描器筛选报告。</p><label for="report-operator" class="field-label">操作者</label><input id="report-operator" class="profile-input" autocomplete="name" maxlength="80" placeholder="例如：张三"><label for="report-device" class="field-label">扫描器名称</label><input id="report-device" class="profile-input" maxlength="80" placeholder="例如：DT50-01"><p id="report-profile-error" class="message error" role="alert" hidden></p><div class="modal-buttons"><button id="cancel-report-profile" class="button secondary">稍后设置</button><button id="save-report-profile" class="button primary">保存设置</button></div><p class="micro-copy">此名称用于报告标识，不是登录身份认证。</p></section></div><div id="invalid-modal" class="modal-backdrop" hidden><section class="help-modal invalid-code-card" role="dialog" aria-modal="true" aria-labelledby="invalid-heading"><div class="modal-top"><span class="invalid-mark">!</span><button id="invalid-close" class="icon-button" aria-label="关闭错误条码提示">×</button></div><h2 id="invalid-heading">请扫描正确的 SKU 条码</h2><p class="invalid-explanation">只接受 <strong>4 位或 5 位纯数字</strong>。请扫描包装上较短的 SKU 条码，不要扫描工厂长条码。</p><div id="invalid-value" class="invalid-value"></div><p class="not-counted">此次扫描未保存，数量未增加。</p><label class="field-label" for="retry-barcode">直接重新扫描正确条码</label><input id="retry-barcode" class="retry-barcode" type="text" inputmode="none" virtualkeyboardpolicy="manual" autocomplete="off" spellcheck="false" placeholder="扫描 4 / 5 位数字 SKU"><button id="invalid-back" class="button primary full-width">返回扫描</button></section></div><div id="pending-modal" class="modal-backdrop" hidden><section class="count-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-heading"><div class="modal-top"><span class="modal-scan-icon">▥</span><button id="cancel-top" class="icon-button" aria-label="取消此次扫描">×</button></div><div class="eyebrow" id="pending-eyebrow">CONFIRM ITEM</div><h2 id="confirm-heading">是这件商品吗？</h2><div class="confirmed-sku"><strong id="pending-sku"></strong><p id="pending-label"></p><span id="pending-location"></span></div><div id="unexpected" class="unexpected" hidden><div><strong>不在当前库位应有清单中</strong><p>误扫请取消；确实在此的商品可记为多出。</p><label><input type="checkbox" id="accepted">我确认该商品实物位于此库位</label></div></div><label for="count" class="field-label">该 SKU 的实点总数量</label><input id="count" class="count-display" readonly inputmode="none" placeholder="0" aria-label="实点总数量，使用下方数字键输入"><div id="numpad" class="numpad"></div><div id="pending-error" class="message compact error" role="alert" hidden></div><div class="modal-buttons"><button id="cancel" class="button secondary">取消误扫</button><button id="confirm" class="button primary">✓ 确认保存</button></div><p class="modal-footnote">确认期间不接受下一次扫描，避免条码误填成数量。</p></section></div>
+<div id="help-modal" class="modal-backdrop" hidden><section class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-heading"><div class="modal-top"><span class="modal-scan-icon">?</span><button id="close-help" class="icon-button" aria-label="关闭帮助">×</button></div><h2 id="help-heading">扫描没有反应？看这里</h2><div class="setup-note"><h3>①「开始核对」没有反应</h3><p>页面需要正常加载程序。请使用当前修复版链接重新打开，不需要清除浏览器数据。</p><h3 style="margin-top:14px">② 设备响了，条码框却没有数字</h3><p>在 DT50 扫描设置中选「Keystroke output / 键盘输出」。Intent / 广播输出不会把条码传给普通网页。然后点一下条码框再扫描。</p><h3 style="margin-top:14px">输出方式总被改回？</h3><p>检查 ScanWedge 当前配置文件；其他应用可能改写输出方式。网页不能锁定设备输出模式。返回网页时会尝试恢复扫码框焦点。</p><h3 style="margin-top:14px">③ 框里有数字，但数量没有增加</h3><p>输入停止后自动识别，或点条码框右侧箭头。正确的 4 / 5 位纯数字 SKU 直接保存并加 1，不会弹出数量确认窗口。</p></div><p class="help-small">仍然逐个库位核对。同一 SKU 每扫一次数量加 1，直接保存；漏扫可补扫，多扫可修改数量。工厂长条码不计数，弹窗后直接改扫正确短条码即可。</p><button id="help-ok" class="button primary full-width">知道了，继续使用 →</button></section></div>
+</div><script src="config.js"></script><script>// Browser -> Apps Script. POST text/plain avoids JSON preflight; no no-cors and no JSONP.
+(function(){
+ const nativeFetch=window.fetch.bind(window);let scannerToken='',scannerConfigPromise=null;
+ const sessionKey='ubswh.google.admin.session';
+ function adminToken(){try{return sessionStorage.getItem(sessionKey)||'';}catch{return '';}}
+ function endpoint(){const url=window.STOCKCHECK_CONFIG?.apiUrl||'';if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(url))throw Error('尚未配置新 Google 测试后台 / New Google test backend is not configured');return url;}
+ async function call(action,args={},signal){if(window.google?.script?.run){if(signal?.aborted)throw new DOMException('Aborted','AbortError');return new Promise((resolve,reject)=>{const abort=()=>reject(new DOMException('Aborted','AbortError'));signal?.addEventListener('abort',abort,{once:true});window.google.script.run.withSuccessHandler(value=>{signal?.removeEventListener('abort',abort);resolve(value);}).withFailureHandler(()=>{signal?.removeEventListener('abort',abort);reject(Error('Google 服务调用失败 / Google service call failed'));}).stockCheckRpc({action,...args});});}const res=await nativeFetch(endpoint(),{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,...args}),credentials:'omit',redirect:'follow',signal,cache:'no-store'});if(!res.ok)throw Error('Google backend HTTP '+res.status);let value;try{value=await res.json();}catch{throw Error('Google 后台没有返回 JSON；请检查部署权限 / Backend did not return JSON; check deployment access');}if(!value||typeof value.status!=='number'||!('data'in value))throw Error('Invalid Google backend response');return value;}
+ async function scannerConfig(signal){if(!scannerConfigPromise)scannerConfigPromise=call('scanner_config',{},signal).then(r=>{if(!r.ok)throw Error(r.data.error);scannerToken=r.data.scannerToken;return r.data;}).catch(e=>{scannerConfigPromise=null;throw e;});return scannerConfigPromise;}
+ window.StockGoogle={call,sessionKey,async login(password){const r=await call('admin_login',{password});if(!r.ok)throw Error('管理口令不正确、请求过多或后台未初始化 / Invalid password, rate limit, or backend not initialized');sessionStorage.setItem(sessionKey,r.data.token);},logout(){sessionStorage.removeItem(sessionKey);location.reload();}};
+ window.fetch=async function(input,options={}){const path=typeof input==='string'?input:'';if(!path.startsWith('/api/'))return nativeFetch(input,options);const url=new URL(path,location.href),body=options.body?JSON.parse(options.body):{},signal=options.signal;let result;
+ if(url.pathname==='/api/inventory')result=await call('inventory',{refresh:url.searchParams.get('refresh')==='1'},signal);
+ else if(['/api/upload-config','/api/cin7/config'].includes(url.pathname)){const data=await scannerConfig(signal);return new Response(JSON.stringify(data),{status:200});}
+ else if(url.pathname==='/api/upload-report'){await scannerConfig(signal);result=await call('upload_report',{...body,scannerToken},signal);if(result.data?.error==='SESSION'){scannerConfigPromise=null;await scannerConfig(signal);result=await call('upload_report',{...body,scannerToken},signal);}}
+ else if(url.pathname==='/api/cin7/lookup'){await scannerConfig(signal);result=await call('cin7_lookup',{...body,scannerToken},signal);if(result.data?.error==='SESSION'){scannerConfigPromise=null;await scannerConfig(signal);result=await call('cin7_lookup',{...body,scannerToken},signal);}}
+ else if(url.pathname==='/api/reports')result=await call('list_reports',{token:adminToken(),query:Object.fromEntries(url.searchParams)},signal);
+ else if(url.pathname==='/api/cin7/settings')result=await call('cin7_settings',{token:adminToken(),...body,save:options.method==='POST'},signal);
+ else {const m=url.pathname.match(/^\/api\/reports\/(r_[a-f0-9]{64})(\/csv)?$/);if(!m)throw Error('Unsupported endpoint');result=await call(m[2]?'report_csv':'report_detail',{token:adminToken(),id:m[1],lang:url.searchParams.get('lang')||'zh'},signal);if(m[2]&&result.ok)return new Response(result.data.csv,{status:200,headers:{'Content-Type':'text/csv;charset=utf-8'}});}
+ if(result.status===401){sessionStorage.removeItem(sessionKey);document.getElementById('google-login')?.removeAttribute('hidden');}
+ return new Response(JSON.stringify(result.data),{status:result.status,headers:{'Content-Type':'application/json'}});
+ };
+})();
+</script><script type="module">const SCALE = 1000000n;
+function units(raw) {
+    const str = String(raw).trim();
+    if (!/^\d{1,18}(?:\.\d{1,6})?$/.test(str))
+        throw Error('请输入有效数量，最多 6 位小数');
+    const [a, b = ''] = str.split('.');
+    return BigInt(a) * SCALE + BigInt(b.padEnd(6, '0'));
+}
+function format(n) { const neg = n < 0n; if (neg)
+    n = -n; const whole = n / SCALE, part = (n % SCALE).toString().padStart(6, '0').replace(/0+$/, ''); return (neg ? '-' : '') + whole + (part ? '.' + part : ''); }
+function parseCSV(text) {
+    text = text.replace(/^\uFEFF/, '');
+    const rows = [];
+    let row = [], field = '', quoted = false;
+    for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (c === '"') {
+            if (quoted && text[i + 1] === '"') {
+                field += '"';
+                i++;
+            }
+            else if (quoted) {
+                quoted = false;
+            }
+            else if (!field) {
+                quoted = true;
+            }
+            else
+                throw Error('CSV 引号格式异常');
+        }
+        else if (c === ',' && !quoted) {
+            row.push(field);
+            field = '';
+        }
+        else if ((c === '\n' || c === '\r') && !quoted) {
+            if (c === '\r' && text[i + 1] === '\n')
+                i++;
+            row.push(field);
+            rows.push(row);
+            row = [];
+            field = '';
+        }
+        else
+            field += c;
+    }
+    if (quoted)
+        throw Error('CSV 引号未结束');
+    if (field || row.length) {
+        row.push(field);
+        rows.push(row);
+    }
+    return rows;
+}
+function isReplacementSku(sku) { return typeof sku === 'string' && sku === sku.trim() && sku.length <= 256 && !/[\u0000-\u001f\u007f]/.test(sku) && /replacement/i.test(sku); }
+function isInventorySku(sku) { return /^[0-9]{1,18}$/.test(sku) || isReplacementSku(sku); }
+function parseReport(text) {
+    const rows = parseCSV(text);
+    const h = rows.slice(0, 40).findIndex(r => r[1]?.trim().toLowerCase() === 'bin' && r[2]?.trim().toLowerCase() === 'sku');
+    if (h < 0 || rows[h][6]?.trim().toLowerCase() !== 'available')
+        throw Error('库存列结构已变化，请检查 B 列 Bin、C 列 SKU 和 G 列 Available');
+    const data = {}, labels = {}, issues = {}, owners = {};
+    let missing = 0, zero = 0;
+    const issue = (loc, txt) => { (issues[loc] ?? (issues[loc] = [])).push(txt); };
+    for (let i = h + 1; i < rows.length; i++) {
+        const r = rows[i];
+        if (r.every(v => !v.trim()))
+            continue;
+        if (r.length < 7)
+            throw Error(`第 ${i + 1} 行字段不足`);
+        const loc = r[1].trim().toUpperCase();
+        if (!loc) {
+            missing++;
+            continue;
+        }
+        const label = r[2].trim(), match = label.match(/^.+~([0-9]+)$/);
+        if (!match && !isReplacementSku(label)) {
+            issue(loc, `第 ${i + 1} 行商品没有有效的 ~数字 后缀（${label}）`);
+            continue;
+        }
+        const sku = match ? match[1] : label;
+        if (labels[sku] && labels[sku] !== label)
+            throw Error(`数字 SKU ${sku} 对应多个完整 SKU，需核实源数据`);
+        labels[sku] = label;
+        const owner = r[0].trim();
+        if (owners[loc] && owners[loc] !== owner)
+            issue(loc, '相同库位号属于多个仓库');
+        owners[loc] = owner;
+        let n;
+        try {
+            n = units(r[6]);
+        }
+        catch {
+            issue(loc, `SKU ${sku} 的 G 列数量无效或为负数（${r[6]}）`);
+            continue;
+        }
+        if (!n) {
+            zero++;
+            continue;
+        }
+        data[loc] ?? (data[loc] = {});
+        data[loc][sku] = format(units(data[loc][sku] ?? '0') + n);
+    }
+    if (!Object.keys(data).length)
+        throw Error('没有可核对的正数量库存');
+    return { data, labels, issues, quantityBasis: 'G · Available', notes: [`${missing} 行未指定库位`, `${zero} 行零数量`, `${Object.keys(issues).length} 个库位有数据异常`] };
+}
+function startSession(inv, location) {
+    const loc = location.trim().toUpperCase();
+    if (!loc)
+        throw Error('请先输入库位');
+    if (inv.issues[loc])
+        throw Error(`${loc} 源数据异常：${inv.issues[loc].join('；')}`);
+    if (!inv.data[loc])
+        throw Error(`找不到 ${loc} 的正数量库存，请检查库位`);
+    return attachStockReference({ location: loc, expected: { ...inv.data[loc] }, labels: { ...inv.labels }, scanned: {}, round: 1, completionCount: 0, recheckRequired: false, phase: 'scanning', startedAt: new Date().toISOString(), snapshot: { fetchedAt: inv.fetchedAt, version: inv.version, quantityBasis: inv.quantityBasis } }, inv);
+}
+function attachStockReference(s, inv) {
+    const bySku = {};
+    for (const [loc, items] of Object.entries(inv.data))
+        for (const [sku, count] of Object.entries(items)) {
+            if (units(count) <= 0n)
+                continue;
+            bySku[sku] ?? (bySku[sku] = {});
+            bySku[sku][loc] = count;
+        }
+    const issues = Object.fromEntries(Object.entries(inv.issues).map(([loc, errors]) => [loc, [...errors]]));
+    return { ...s, reference: { bySku, issues, fetchedAt: inv.fetchedAt, version: inv.version, quantityBasis: inv.quantityBasis } };
+}
+function otherLocationHint(s, sku) {
+    if (!s.reference)
+        return '其他库位数据暂不可用，请刷新库存后查看。';
+    const items = s.reference.bySku[sku] ?? {};
+    const pairs = Object.entries(items).filter(([loc, count]) => loc !== s.location && units(count) > 0n).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }));
+    if (!pairs.length)
+        return '其他库位未查到该 SKU 的正可用数量（G 列）。';
+    return '其他库位（G 列可用数量）：' + pairs.map(([loc, count]) => loc + '：' + count + (s.reference.issues[loc] ? '（源数据异常，仅供参考）' : '')).join('；');
+}
+function scanCheck(s, raw) { if (s.phase !== 'scanning')
+    throw Error('请先点击「继续补扫」'); const sku = raw.trim(); if (!/^[0-9]{4,5}$/.test(sku))
+    throw Error('请扫描正确的 SKU 条码：只接受 4 位或 5 位纯数字，工厂长条码不计数'); return sku; }
+function recordQuantity(s, raw, quantity) {
+    if (s.phase !== 'scanning')
+        throw Error('当前核对已完成，请先继续补扫');
+    let sku = raw.trim();
+    if (!/^[0-9]{4,5}$/.test(sku) && !isReplacementSku(sku))
+        throw Error('手动输入只接受 4 / 5 位数字 SKU 或包含 Replacement 的 SKU');
+    if (isReplacementSku(sku)) {
+        const known = Object.keys(s.labels).filter(k => k.toLowerCase() === sku.toLowerCase());
+        if (known.length === 1)
+            sku = known[0];
+    }
+    const amount = units(quantity);
+    if (amount === 0n) {
+        if (!(sku in s.expected))
+            throw Error('零数量仅用于当前库位应有的 SKU；误扫的多出商品请删除记录');
+        return { ...s, scanned: { ...s.scanned, [sku]: '0' } };
+    }
+    const total = format(units(s.scanned[sku] ?? '0') + amount);
+    // Keep the accumulated value within the same bounds accepted by restore().
+    units(total);
+    return { ...s, scanned: { ...s.scanned, [sku]: total } };
+}
+function recordItem(s, raw) { return recordQuantity(s, scanCheck(s, raw), '1'); }
+function availableLocations(inv) { return Object.keys(inv.data).filter(loc => !inv.issues[loc]).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })); }
+function locationSuggestions(locations, raw, limit = 20) { const prefix = raw.trim().toUpperCase(); return locations.filter(loc => loc.startsWith(prefix)).slice(0, limit); }
+function saveCount(s, sku, count, kind, accept) {
+    if (s.phase !== 'scanning')
+        throw Error('当前核对已完成，请先继续补扫');
+    if (!isInventorySku(sku))
+        throw Error('条码格式错误');
+    if (kind === 'scan' && sku in s.scanned)
+        throw Error('重复条码，未增加数量');
+    if (kind === 'edit' && !(sku in s.scanned))
+        throw Error('该商品尚未记录');
+    if (!(sku in s.expected) && !accept)
+        throw Error('请勾选确认：该商品实物确实位于当前库位');
+    const n = units(count);
+    if (n === 0n && !(sku in s.expected))
+        throw Error('零数量仅用于当前库位应有的 SKU；误扫的多出商品请删除记录');
+    return { ...s, scanned: { ...s.scanned, [sku]: format(n) } };
+}
+function results(s) { return [...new Set([...Object.keys(s.expected), ...Object.keys(s.scanned)])].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).map(sku => { const e = units(s.expected[sku] ?? '0'), a = units(s.scanned[sku] ?? '0'); return { sku, label: s.labels[sku] ?? '未知 SKU', expected: format(e), actual: sku in s.scanned ? format(a) : '', diff: format(a - e), status: !(sku in s.scanned) ? '漏扫' : !(sku in s.expected) ? '多出' : e === a ? '一致' : '数量不符' }; }); }
+// First completion with differences stays editable and cannot create a cloud report.
+// A persisted completion count keeps the mandatory second check intact after reload.
+function completeRound(s, now = new Date().toISOString()) {
+    if (s.phase !== 'scanning')
+        throw Error('当前核对已完成，请先继续补扫');
+    const completionCount = (s.completionCount ?? 0) + 1;
+    const recheckRequired = completionCount === 1 && results(s).some(r => r.status !== '一致');
+    return { ...s, completionCount, recheckRequired, phase: recheckRequired ? 'scanning' : 'finished', round: s.round + (recheckRequired ? 1 : 0), checkedAt: recheckRequired ? undefined : now };
+}
+function normalizeBaselineOverride(raw) {
+    const string = (value, max = 256) => { if (typeof value !== 'string' || !value.trim() || value.length > max || /[\u0000-\u001f]/.test(value))
+        throw Error('Cin7 基准记录格式异常'); return value.trim(); };
+    if (!raw || raw.source !== 'cin7' || typeof raw.googlePresent !== 'boolean' || typeof raw.zeroConfirmed !== 'boolean')
+        throw Error('Cin7 基准记录格式异常');
+    const quantity = format(units(string(raw.quantity, 32))), googleQuantity = format(units(string(raw.googleQuantity, 32))), physicalQuantity = format(units(string(raw.physicalQuantity, 32)));
+    if (quantity !== physicalQuantity || (quantity === '0' && !raw.zeroConfirmed))
+        throw Error('Cin7 基准需与确认的实点数量一致');
+    const fetchedAt = string(raw.fetchedAt, 64), adoptedAt = string(raw.adoptedAt, 64);
+    if (!Number.isFinite(Date.parse(fetchedAt)) || !Number.isFinite(Date.parse(adoptedAt)))
+        throw Error('Cin7 基准时间无效');
+    return { source: 'cin7', quantity, googleQuantity, googlePresent: raw.googlePresent, warehouse: string(raw.warehouse), bin: string(raw.bin), fetchedAt: new Date(fetchedAt).toISOString(), adoptedAt: new Date(adoptedAt).toISOString(), physicalQuantity, zeroConfirmed: raw.zeroConfirmed };
+}
+function cin7BaselineCandidate(s, sku, result, confirmZero = false, now = Date.now()) {
+    if (!/^[0-9]{4,5}$/.test(sku) || !result?.ok || result.numericSku !== sku || !Array.isArray(result.groups))
+        throw Error('Cin7 查询结果无法用于当前 SKU');
+    const full = s.labels[sku] && s.labels[sku].endsWith('~' + sku) ? s.labels[sku] : sku;
+    if (result.sku !== full)
+        throw Error('Cin7 查询结果无法用于当前 SKU');
+    const age = now - Date.parse(result.fetchedAt);
+    if (!Number.isFinite(age) || age > 300000 || age < -60000)
+        throw Error('Cin7 查询已超过 5 分钟，请重新查询后采用');
+    const matches = result.groups.filter((r) => (String(r.bin || r.location || '')).trim().toUpperCase() === s.location.toUpperCase());
+    if (matches.length !== 1 || !matches[0].location)
+        throw Error('Cin7 当前库位不唯一或没有返回，不能采用基准');
+    const row = matches[0];
+    if (row.available === null || row.available === undefined)
+        throw Error('Cin7 当前库位可用数量缺失，不能采用基准');
+    let quantity;
+    try {
+        quantity = format(units(String(row.available)));
+    }
+    catch {
+        throw Error('Cin7 可用数量必须为非负有效数量');
+    }
+    let actual = s.scanned[sku];
+    if (actual === undefined) {
+        if (quantity === '0' && confirmZero)
+            actual = '0';
+        else
+            throw Error('请先记录实点数量；实物为 0 时请明确勾选确认');
+    }
+    if (format(units(actual)) !== quantity)
+        throw Error('实点数量与 Cin7 可用数量不一致，不能采用基准');
+    const original = s.originalExpected || s.expected;
+    return normalizeBaselineOverride({ source: 'cin7', quantity, googleQuantity: original[sku] ?? '0', googlePresent: Object.prototype.hasOwnProperty.call(original, sku), warehouse: row.location, bin: row.bin || row.location, fetchedAt: result.fetchedAt, adoptedAt: new Date(now).toISOString(), physicalQuantity: actual, zeroConfirmed: quantity === '0' });
+}
+function adoptCin7Baseline(s, sku, result, confirmZero = false, now = Date.now()) {
+    const baseline = cin7BaselineCandidate(s, sku, result, confirmZero, now);
+    return { ...s, originalExpected: s.originalExpected || { ...s.expected }, expected: { ...s.expected, [sku]: baseline.quantity }, baselineOverrides: { ...s.baselineOverrides, [sku]: baseline }, scanned: s.scanned[sku] === undefined ? { ...s.scanned, [sku]: '0' } : { ...s.scanned }, ...(s.phase === 'finished' ? { checkedAt: baseline.adoptedAt } : {}) };
+}
+const baselineCSVHeaders = ['核对基准来源', '原 Google 基准数量', '原 Google 读取时间', '原 Google 版本', '采用的 Cin7 数量', 'Cin7 仓库', 'Cin7 库位', 'Cin7 读取时间', '采用时间', '采用时实点数量', '已确认实物为零'];
+function baselineCSVValues(b, googleQuantity, snapshot) { return [b ? 'Cin7' : 'Google', b?.googleQuantity ?? googleQuantity, snapshot.fetchedAt, snapshot.version, b?.quantity ?? '', b?.warehouse ?? '', b?.bin ?? '', b?.fetchedAt ?? '', b?.adoptedAt ?? '', b?.physicalQuantity ?? '', b?.zeroConfirmed ? 'yes' : '']; }
+function restore(raw) { const s = JSON.parse(raw); if (s === null)
+    return null; if (!s || typeof s.location !== 'string' || !s.expected || !s.scanned || !s.labels || !s.snapshot?.version || !['scanning', 'finished'].includes(s.phase) || !Number.isInteger(s.round) || s.round < 1)
+    throw Error('已保存的任务格式异常，请保留原记录'); if (s.completionCount !== undefined && (!Number.isSafeInteger(s.completionCount) || s.completionCount < 0))
+    throw Error('复核记录格式异常'); if (s.recheckRequired !== undefined && typeof s.recheckRequired !== 'boolean')
+    throw Error('复核记录格式异常'); if (s.recheckRequired && (s.completionCount !== 1 || s.phase !== 'scanning'))
+    throw Error('复核记录格式异常'); for (const map of [s.expected, s.scanned, ...(s.originalExpected ? [s.originalExpected] : [])]) {
+    for (const [sku, n] of Object.entries(map)) {
+        if (!isInventorySku(sku) || typeof n !== 'string')
+            throw Error('保存记录格式异常');
+        units(n);
+    }
+} if (s.baselineOverrides) {
+    if (!s.originalExpected || typeof s.baselineOverrides !== 'object' || Array.isArray(s.baselineOverrides))
+        throw Error('Cin7 基准记录格式异常');
+    for (const [sku, value] of Object.entries(s.baselineOverrides)) {
+        const b = normalizeBaselineOverride(value);
+        if (!/^[0-9]{4,5}$/.test(sku) || s.expected[sku] === undefined || format(units(s.expected[sku])) !== b.quantity || format(units(s.originalExpected[sku] ?? '0')) !== b.googleQuantity || Object.prototype.hasOwnProperty.call(s.originalExpected, sku) !== b.googlePresent || b.bin.toUpperCase() !== s.location.toUpperCase())
+            throw Error('Cin7 基准记录格式异常');
+        s.baselineOverrides[sku] = b;
+    }
+} return s; }
+function exportCSV(s) {
+    const cell = (x) => { let v = String(x ?? ''); if (/^[=+@\t\r]/.test(v) || (/^\-/.test(v) && !/^\-\d+(\.\d+)?$/.test(v)))
+        v = "'" + v; return '"' + v.replaceAll('"', '""') + '"'; };
+    const rows = [['库位', '数字SKU', '完整SKU', '基准数量', '实点数量', '差异', '结果', '轮次', '数量口径', '基准读取时间', '版本', '状态', '备注（其他库位）', '备注参考读取时间', '备注参考版本', ...baselineCSVHeaders]];
+    for (const r of results(s))
+        rows.push([s.location, r.sku, r.label, r.expected, r.actual, r.diff, r.status, s.round, s.baselineOverrides?.[r.sku] ? 'Cin7 · Available' : s.snapshot.quantityBasis, s.baselineOverrides?.[r.sku]?.fetchedAt ?? s.snapshot.fetchedAt, s.baselineOverrides?.[r.sku] ? 'cin7@' + s.baselineOverrides[r.sku].fetchedAt : s.snapshot.version, s.phase, r.status === '一致' ? '' : otherLocationHint(s, r.sku), r.status === '一致' ? '' : s.reference?.fetchedAt ?? '', r.status === '一致' ? '' : s.reference?.version ?? '', ...baselineCSVValues(s.baselineOverrides?.[r.sku], s.expected[r.sku] ?? '0', s.snapshot)]);
+    return '\uFEFF' + rows.map(r => r.map(cell).join(',')).join('\r\n');
+}
+
+function field(value, name, max, empty = false) { if (typeof value !== 'string' || value.length > max || /[\u0000-\u001f]/.test(value) || (!empty && !value.trim()))
+    throw Error(`Invalid ${name}`); return value.trim(); }
+function iso(value, name) { const s = field(value, name, 64); if (!Number.isFinite(Date.parse(s)))
+    throw Error(`Invalid ${name}`); return new Date(s).toISOString(); }
+function normalizeReport(raw) {
+    if (!raw || raw.schemaVersion !== 1)
+        throw Error('Unsupported report version');
+    const location = field(raw.location, 'location', 80).toUpperCase(), operator = field(raw.operator, 'operator', 80), deviceId = field(raw.deviceId, 'device ID', 64), deviceName = field(raw.deviceName, 'device name', 80);
+    if (!/^d_[a-f0-9]{32}$/.test(deviceId))
+        throw Error('Invalid device ID');
+    if (!Number.isInteger(raw.round) || raw.round < 1 || raw.round > 10000)
+        throw Error('Invalid round');
+    if (!Array.isArray(raw.rows) || raw.rows.length < 1 || raw.rows.length > 2000)
+        throw Error('Invalid report rows');
+    const seen = new Set();
+    const rows = raw.rows.map((r) => {
+        const sku = field(r?.sku, 'SKU', 256);
+        if (!isInventorySku(sku) || seen.has(sku))
+            throw Error('Invalid or duplicate report SKU');
+        seen.add(sku);
+        const expected = format(units(field(r.expected, 'expected quantity', 32))), actual = r.actual === '' ? '' : format(units(field(r.actual, 'counted quantity', 32)));
+        const baseline = r.baseline === undefined ? undefined : normalizeBaselineOverride(r.baseline);
+        if (baseline && baseline.bin.toUpperCase() !== location)
+            throw Error('Baseline location does not match report');
+        if (baseline && baseline.quantity !== expected)
+            throw Error('Baseline does not match expected quantity');
+        const e = units(expected), a = units(actual || '0');
+        if (!e && !a && !(baseline?.quantity === '0' && baseline.zeroConfirmed && actual === '0'))
+            throw Error('Empty report row');
+        const status = actual === '' ? '漏扫' : baseline ? (e === a ? '一致' : '数量不符') : e === 0n ? '多出' : e === a ? '一致' : '数量不符';
+        return { sku, label: field(r.label, 'full SKU', 256), expected, actual, diff: format(a - e), status, note: status === '一致' ? '' : field(r.note ?? '', 'note', 12000, true), referenceFetchedAt: status === '一致' ? '' : field(r.referenceFetchedAt ?? '', 'reference time', 64, true), referenceVersion: status === '一致' ? '' : field(r.referenceVersion ?? '', 'reference version', 128, true), ...(baseline ? { baseline } : {}) };
+    }).sort((a, b) => a.sku.localeCompare(b.sku, undefined, { numeric: true }));
+    return { schemaVersion: 1, location, operator, deviceId, deviceName, round: raw.round, startedAt: iso(raw.startedAt, 'start time'), checkedAt: iso(raw.checkedAt, 'check time'), snapshot: { fetchedAt: iso(raw.snapshot?.fetchedAt, 'baseline time'), version: field(raw.snapshot?.version, 'baseline version', 128), quantityBasis: field(raw.snapshot?.quantityBasis, 'quantity basis', 80) }, rows };
+}
+function makeReport(s, profile) {
+    if (s.recheckRequired)
+        throw Error('首次核对有差异，请再次完成核对后上传。');
+    if (s.phase !== 'finished' || !s.checkedAt)
+        throw Error('请先完成本轮核对，再上传报告。');
+    return normalizeReport({ schemaVersion: 1, location: s.location, ...profile, round: s.round, startedAt: s.startedAt, checkedAt: s.checkedAt, snapshot: s.snapshot, rows: results(s).map(r => ({ ...r, ...(s.baselineOverrides?.[r.sku] ? { baseline: s.baselineOverrides[r.sku] } : {}), note: r.status === '一致' ? '' : otherLocationHint(s, r.sku), referenceFetchedAt: s.reference?.fetchedAt ?? '', referenceVersion: s.reference?.version ?? '' })) });
+}
+function canonicalJSON(value) { if (value === null || typeof value !== 'object')
+    return JSON.stringify(value); if (Array.isArray(value))
+    return '[' + value.map(canonicalJSON).join(',') + ']'; return '{' + Object.keys(value).sort().map(k => JSON.stringify(k) + ':' + canonicalJSON(value[k])).join(',') + '}'; }
+async function reportId(p) { const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(canonicalJSON(p))); return 'r_' + [...new Uint8Array(bytes)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+function reportSummary(p) { return { missing: p.rows.filter(r => r.status === '漏扫').length, extra: p.rows.filter(r => r.status === '多出').length, mismatch: p.rows.filter(r => r.status === '数量不符').length, matched: p.rows.filter(r => r.status === '一致').length, expectedTotal: format(p.rows.reduce((n, r) => n + units(r.expected), 0n)), countedTotal: format(p.rows.reduce((n, r) => n + units(r.actual || '0'), 0n)) }; }
+function cloudReportCSV(p, id, receivedAt) {
+    const rows = [['库位', '数字SKU', '完整SKU', '基准数量', '实点数量', '差异', '结果', '轮次', '数量口径', '基准读取时间', '版本', '状态', '备注（其他库位）', '备注参考读取时间', '备注参考版本', '报告编号', '操作者', '扫描器名称', '设备编号', '云端接收时间', ...baselineCSVHeaders]];
+    for (const r of p.rows)
+        rows.push([p.location, r.sku, r.label, r.expected, r.actual, r.diff, r.status, p.round, r.baseline ? 'Cin7 · Available' : p.snapshot.quantityBasis, r.baseline?.fetchedAt ?? p.snapshot.fetchedAt, r.baseline ? 'cin7@' + r.baseline.fetchedAt : p.snapshot.version, 'finished', r.note, r.referenceFetchedAt, r.referenceVersion, id, p.operator, p.deviceName, p.deviceId, receivedAt, ...baselineCSVValues(r.baseline, r.expected, p.snapshot)]);
+    const cell = (v) => { let s = String(v ?? ''); if (/^[=+@\t\r]/.test(s) || (/^\-/.test(s) && !/^\-\d+(\.\d+)?$/.test(s)))
+        s = "'" + s; return '"' + s.replaceAll('"', '""') + '"'; };
+    return '\uFEFF' + rows.map(r => r.map(cell).join(',')).join('\r\n');
+}
+
+const EN = {
+    '库位核对 · Urbansales': 'Stock check · Urbansales', '库位核对首页': 'Stock check home', '关闭错误提示音': 'Mute error sound', '开启错误提示音': 'Enable error sound', '查看操作帮助': 'Open help', '库位扫描核对': 'Location stock check', '一个库位，一次核清。': 'One location. Every item accounted for.', '页面正在启动': 'Starting…', '如果此提示一直没有消失，说明页面程序未能启动，请使用下方「重新加载修复版」入口。': 'If this message stays visible, the app has not started. Use the reload link below.', '重新加载修复版': 'Reload the latest version', '浏览器需要启用 JavaScript 才能接收扫码。请让设备管理员检查浏览器设置。': 'JavaScript is required for scanning. Ask your device administrator to check the browser settings.', '关闭提示': 'Dismiss message',
+    '选择库位': 'Choose a location', '输入 Location': 'Enter location', '例如 A01-01': 'e.g. A01-01', '开始核对 →': 'Start check →', '切换库位 →': 'Change location →', '库存自动读取，无需导入文件或连接电脑。': 'Inventory loads automatically. No file import or PC connection needed.', '当前任务的库存基准已固定，补扫不会改变。': 'This check uses a fixed inventory snapshot, including additional scans.', '准备好，开始第一个库位': 'Ready to check your first location', '输入库位后，按扫描键读取商品条码。': 'Enter a location, then use the scanner to read each item.', '每件商品扫描一次，系统自动保存并累计数量。': 'Scan each item once. Counts are saved and added automatically.', '输入库位': 'Enter location', '扫描商品': 'Scan items', '查看结果': 'View results', '应有 SKU 已记录': 'expected SKUs scanned', '商品数字 SKU': 'Numeric SKU barcode', '扫描的条码会显示在这里': 'Scanned barcode appears here', '识别条码': 'Read barcode', '只接受 4 / 5 位纯数字 SKU；每件扫一次，自动加 1。': '4- or 5-digit SKUs only. Each item scanned adds 1.', '手动输入': 'Manual input', '切回扫码': 'Back to scanning', '每次有效扫描自动计 1 件 · 实点累计': 'Each valid scan adds 1 · Total counted', '件': 'items', '尚未收到条码输入。若设备响了但这里没变化，请点右上角「?」检查键盘输出。': 'No barcode received yet. If the scanner beeps but nothing appears, open ? to check keyboard output.', '尚未收到条码输入。': 'No barcode received yet.', '已开始核对。尚未收到条码输入。': 'Check started. Waiting for a barcode.', '手动输入 SKU（每次识别也计 1 件）': 'Manual SKU input (each submission adds 1)', '例如：1719': 'e.g. 1719', '识别 SKU': 'Add SKU', '输入 4 / 5 位数字 SKU，再点「识别 SKU」，将直接保存并加 1。': 'Enter a 4- or 5-digit SKU and tap Add SKU to save it and add 1.',
+    '核对明细': 'Check details', '↓ 导出报告': '↓ Export report', '只看差异 ↓': 'Differences only ↓', '显示全部 ↓': 'Show all ↓', '✓ 完成本轮核对': '✓ Finish this round', '↶ 继续补扫 · 保留原记录': '↶ Continue scanning · Keep counts', '库存同步': 'Inventory sync', '刷新库存': 'Refresh inventory', 'Google 库存表': 'Google inventory sheet', '自动同步 · 每 30 分钟': 'Automatic refresh · Every 30 minutes', '数量基准': 'Quantity basis', 'G 列 · Available': 'Column G · Available', '最近读取': 'Last fetched', '正在读取…': 'Loading…', '读取失败': 'Load failed', '可用库位': 'Available locations', '读取时间不代表上游报表的业务更新时间。': 'Fetch time is not the source report’s business update time.', '让每次核对，都简单一点。': 'Make every stock check simpler.', '逐件扫描': 'Scan every item', '只扫描包装上的 4 / 5 位数字 SKU。工厂长条码会被拦截。': 'Scan the 4- or 5-digit SKU on the packaging. Long factory barcodes are blocked.', '自动保存计数': 'Save counts automatically', '同一 SKU 每扫一次加 1，无需确认数量。请避免重扫同一件。': 'Every scan of the same SKU adds 1. No quantity confirmation. Avoid rescanning the same item.', '差异随时补核': 'Review and correct differences', '完成后可继续补扫，已有记录自动保留。': 'Continue scanning after finishing. Existing counts are kept.', '首次使用 DT50？ →': 'First time using DT50? →', '任务自动保存在当前设备和浏览器': 'Checks are saved in this device and browser',
+    '关闭错误条码提示': 'Close invalid barcode message', '请扫描正确的 SKU 条码': 'Scan the correct SKU barcode', '只接受': 'Accepts only', '4 位或 5 位纯数字': '4 or 5 digits', '。请扫描包装上较短的 SKU 条码，不要扫描工厂长条码。': '. Scan the shorter SKU barcode on the packaging, not the long factory barcode.', '此次扫描未保存，数量未增加。': 'This scan was not saved. The count has not increased.', '直接重新扫描正确条码': 'Scan the correct barcode here', '扫描 4 / 5 位数字 SKU': 'Scan a 4- or 5-digit SKU', '返回扫描': 'Return to scanning', '取消此次扫描': 'Cancel this scan', '是这件商品吗？': 'Is this the right item?', '重新清点数量': 'Recount quantity', '不在当前库位应有清单中': 'Not expected at this location', '误扫请取消；确实在此的商品可记为多出。': 'Cancel if scanned by mistake. An item physically here can be recorded as extra.', '我确认该商品实物位于此库位': 'I confirm this item is physically at this location', '该 SKU 的实点总数量': 'Total counted quantity for this SKU', '实点总数量，使用下方数字键输入': 'Counted quantity; use the number pad below', '取消误扫': 'Cancel', '✓ 确认保存': '✓ Save quantity', '确认期间不接受下一次扫描，避免条码误填成数量。': 'Scanning is paused while editing a quantity.', '删除一位': 'Backspace', '修改数量': 'Edit quantity', '删除误扫': 'Delete mistaken scan',
+    '关闭帮助': 'Close help', '扫描没有反应？看这里': 'Scanner not responding?', '①「开始核对」没有反应': '1. Start check does not respond', '页面需要正常加载程序。请使用当前修复版链接重新打开，不需要清除浏览器数据。': 'Reopen the latest app link. You do not need to clear browser data.', '② 设备响了，条码框却没有数字': '2. Scanner beeps, but no barcode appears', '在 DT50 扫描设置中选「Keystroke output / 键盘输出」。Intent / 广播输出不会把条码传给普通网页。然后点一下条码框再扫描。': 'In DT50 scan settings, select Keystroke output. Intent / broadcast output does not send barcodes to a normal webpage. Tap the barcode field and scan again.', '③ 框里有数字，但数量没有增加': '3. Barcode appears, but count does not increase', '输入停止后自动识别，或点条码框右侧箭头。正确的 4 / 5 位纯数字 SKU 直接保存并加 1，不会弹出数量确认窗口。': 'The app reads the barcode when input stops, or when you tap the arrow. A valid 4- or 5-digit SKU is saved and adds 1 without a quantity confirmation.', '仍然逐个库位核对。同一 SKU 每扫一次数量加 1，直接保存；漏扫可补扫，多扫可修改数量。工厂长条码不计数，弹窗后直接改扫正确短条码即可。': 'Check one location at a time. Each scan adds 1 and saves immediately. Scan missing items or edit overcounts. Factory barcodes do not count; scan the correct short SKU in the error dialog to continue.', '知道了，继续使用 →': 'Got it · Continue →',
+    '正在更新库存': 'Refreshing inventory', '库存连接异常': 'Inventory connection error', '库存已连接': 'Inventory connected', '本轮已完成': 'Round complete', '本轮扫描已完成': 'This scanning round is complete', '已完成': 'Completed', '扫描中': 'Scanning', '核对通过': 'Check passed', '商品与录入数量均与库存基准一致。': 'All items and counted quantities match the inventory snapshot.', '查看下方差异，可继续补扫或修改数量。': 'Review the differences below. Continue scanning or edit quantities.', '扫描过程中显示当前差异': 'Current differences while scanning', '核对结果': 'Check results', '✓ 此筛选下没有商品': '✓ No items match this filter', '漏扫': 'Missing', '多出': 'Extra SKU', '数量不符': 'Quantity mismatch', '一致': 'Match', '待扫描': 'Not scanned', '基准': 'Expected', '实点': 'Counted', '差异': 'Difference', '备注 · 其他库位': 'Note · Other locations', '其他库位未查到该 SKU 的正可用数量（G 列）。': 'No positive available quantity found at other locations (column G).', '其他库位数据暂不可用，请刷新库存后查看。': 'Other-location data is unavailable. Refresh inventory and try again.', '未知 SKU': 'Unknown SKU', '未找到对应的完整 SKU': 'No matching full SKU found',
+    '保存失败，本次操作未确认。请导出报告并检查设备存储空间。': 'Save failed. This action is not confirmed. Export the report and check device storage.', '库存读取失败': 'Could not load inventory', '库存响应格式异常': 'Invalid inventory response', '库存请求超时，请点刷新重试': 'Inventory request timed out. Tap refresh to retry', '网络连接失败': 'Network connection failed', '库存读取中，请稍候': 'Inventory is loading. Please wait', '请先等待库存连接成功': 'Wait for inventory to connect first', '新库位会替换当前任务，需要保留报告请先取消并导出。继续？': 'A new location replaces this check. Cancel and export first if you need its report. Continue?', '本库位核对通过，商品与录入数量均一致。': 'Check passed. All items and counted quantities match.', '补扫已开始，原计数保留；每件再扫一次会继续加 1，请勿重扫已清点的商品。': 'Additional scanning started. Existing counts are kept. Every scan adds 1; do not rescan items already counted.', '手动输入后按回车或点右侧箭头。': 'After typing, press Enter or tap the arrow.', '请在手动输入框填写数字 SKU，例如 1719。': 'Enter a numeric SKU in the manual field, e.g. 1719.', '已恢复上次核对，可继续操作。': 'Your previous check has been restored. You can continue.', '无法恢复或保存任务': 'Could not restore or save this check', '请先点击「继续补扫」': 'Tap Continue scanning first', '请扫描正确的 SKU 条码：只接受 4 位或 5 位纯数字，工厂长条码不计数': 'Scan the correct SKU: only 4 or 5 digits are accepted. Long factory barcodes do not count.', '当前核对已完成，请先继续补扫': 'This check is complete. Tap Continue scanning first', '条码格式错误': 'Invalid barcode format', '重复条码，未增加数量': 'Duplicate barcode; quantity was not increased', '该商品尚未记录': 'This item has not been recorded', '请勾选确认：该商品实物确实位于当前库位': 'Confirm that this item is physically at the current location', '请输入有效数量，最多 6 位小数': 'Enter a valid quantity, with up to 6 decimal places', '数量应大于 0，误扫请取消或删除记录': 'Quantity must be greater than 0. Cancel or delete a mistaken scan', '请先输入库位': 'Enter a location first', '已保存的任务格式异常，请保留原记录': 'Saved check data is invalid. Keep the original record', '保存记录格式异常': 'Invalid saved record format', '库存列结构已变化，请检查 B 列 Bin、C 列 SKU 和 G 列 Available': 'Inventory columns have changed. Check B: Bin, C: SKU and G: Available', '没有可核对的正数量库存': 'No positive inventory quantities are available', '相同库位号属于多个仓库': 'This location ID belongs to more than one warehouse', '库存来源暂时无法访问，请稍后重试': 'The inventory source is unavailable. Please try again later', '库存来源返回了网页，请检查发布链接': 'The inventory source returned a webpage. Check its published CSV link', '库存文件过大，请联系管理员': 'Inventory file is too large. Contact your administrator',
+    '（不在当前库位应有清单中，已记为多出）': ' (not expected here; recorded as an extra SKU)', '（已超过基准数量）': ' (above expected quantity)',
+    '库位': 'Location', '数字SKU': 'Numeric SKU', '完整SKU': 'Full SKU', '基准数量': 'Expected quantity', '实点数量': 'Counted quantity', '差额': 'Difference', '结果': 'Result', '轮次': 'Round', '数量口径': 'Quantity basis', '基准读取时间': 'Baseline fetched at', '版本': 'Version', '状态': 'Status', '备注（其他库位）': 'Notes (other locations)', '备注参考读取时间': 'Reference fetched at', '备注参考版本': 'Reference version'
+};
+Object.assign(EN, { '商品与实点数量符合当前采用的基准，Cin7 来源已逐项标记。': 'Items and counts match the currently adopted baselines. Cin7 sources are marked per SKU.' });
+Object.assign(EN, { "Cin7 基准记录格式异常": "Invalid saved Cin7 baseline", "Cin7 基准需与确认的实点数量一致": "The Cin7 baseline must match the confirmed physical quantity", "Cin7 基准时间无效": "Invalid Cin7 baseline time", "Cin7 查询结果无法用于当前 SKU": "This Cin7 response cannot be used for the current SKU", "Cin7 查询已超过 5 分钟，请重新查询后采用": "The Cin7 query is over 5 minutes old. Query again before adopting it", "Cin7 当前库位不唯一或没有返回，不能采用基准": "Cin7 did not return one unique current location. The baseline cannot be adopted", "Cin7 当前库位可用数量缺失，不能采用基准": "Cin7 available quantity is missing. The baseline cannot be adopted", "Cin7 可用数量必须为非负有效数量": "Cin7 available quantity must be a valid non-negative number", "请先记录实点数量；实物为 0 时请明确勾选确认": "Record the physical count first. If it is zero, explicitly tick the confirmation", "实点数量与 Cin7 可用数量不一致，不能采用基准": "The counted quantity differs from Cin7 available stock. The baseline cannot be adopted", "当前任务已变化，请关闭后重新校对": "The current check has changed. Close this view and check again", "保存失败，尚未采用 Cin7 基准": "Save failed. The Cin7 baseline has not been adopted", "实点与当前库位 Cin7 可用数量一致，可采用该 SKU 的 Cin7 基准。": "The counted quantity matches Cin7 available stock at this location. You can adopt its baseline for this SKU.", "我已确认该库位该 SKU 的实物数量为 0": "I confirm the physical quantity of this SKU at this location is zero", "实物一致，采用 Cin7 基准": "Physical count matches · Adopt Cin7 baseline", "查询本身不改动数据。采用后仅更新本 SKU 的核对基准，保留原 Google 数量；不会回写 Google 或 Cin7 库存。": "Querying does not change data. Adopting updates only this SKU’s check baseline and keeps the original Google quantity. It does not update Google or Cin7 stock.", "初始 Google 基准已固定；可按 SKU 明确采用 Cin7 基准。": "The original Google baseline is fixed. A Cin7 baseline can be explicitly adopted per SKU.", "Cin7 按需辅助复核：查询不改动数据，实物一致时可单独采用该 SKU 的 Cin7 基准。": "Cin7 reference checks do not change data. Adopt its baseline per SKU only when the physical count matches.", "输出方式总被改回？": "Output mode keeps changing back?", "检查 ScanWedge 当前配置文件；其他应用可能改写输出方式。网页不能锁定设备输出模式。返回网页时会尝试恢复扫码框焦点。": "Check the active ScanWedge profile; other apps may change the output mode. A webpage cannot lock the device output mode. The scan field will try to regain focus when you return.", "核对基准来源": "Baseline source", "原 Google 基准数量": "Original Google quantity", "原 Google 读取时间": "Original Google fetched at", "原 Google 版本": "Original Google version", "采用的 Cin7 数量": "Adopted Cin7 quantity", "Cin7 仓库": "Cin7 warehouse", "Cin7 库位": "Cin7 bin", "Cin7 读取时间": "Cin7 fetched at", "采用时间": "Adopted at", "采用时实点数量": "Physical quantity at adoption", "已确认实物为零": "Zero physical quantity confirmed" });
+Object.assign(EN, { "Cin7 正在连接…": "Connecting to Cin7…", "Cin7 暂不可用": "Cin7 unavailable", "Cin7 实时校对": "Cin7 live check", "Cin7 实时校对 · 待配置": "Cin7 live check · Not configured", "点击后查询该 SKU，不修改本轮基准或实点数量。": "Look up this SKU without changing the baseline or counted quantity.", "Cin7 按需辅助复核：仅点击差异 SKU 时查询，不改变 Google 盘点基准。": "Cin7 reference check: queried only when you click a differing SKU. The Google baseline stays unchanged.", "关闭 Cin7 校对": "Close Cin7 check", "正在查询 Cin7，请稍候…": "Querying Cin7. Please wait…", "仓库 / Location": "Warehouse / Location", "库位 / Bin": "Location / Bin", "可用 / Available": "Available", "在库 / On Hand": "On hand", "已分配 / Allocated": "Allocated", "在订 / On Order": "On order", "Cin7 未返回该 SKU 的库存记录。请核对完整 SKU；这不代表实物库存一定为 0。": "Cin7 returned no stock records for this SKU. Check the full SKU; this does not necessarily mean zero physical stock.", "页面仅显示前 200 个库位，当前库位优先。请在 Cin7 查看其余记录。": "Showing the first 200 locations, with the current location first. Check Cin7 for the remaining records.", "仅作辅助复核，不修改 Google 基准、实点数量或 Cin7 库存。查询时间不代表该时刻之后库存没有变化。": "Reference only. This does not change the Google baseline, your counts or Cin7 stock. Stock can change after the query time.", "再次查询 Cin7": "Query Cin7 again", "多个仓库存在同名库位，请按仓库分别核实。": "The same bin exists in multiple warehouses. Review each warehouse separately.", "Cin7 未返回当前库位库存行，不能据此直接判定为 0。": "Cin7 returned no row for this location. Do not assume its stock is zero.", "当前库位的可用数量字段缺失，请在 Cin7 核实。": "Available quantity is missing for this location. Check Cin7.", "Cin7 尚未配置，请联系管理者检查连接设置。": "Cin7 is not configured. Ask the manager to check connection settings.", "Cin7 拒绝了连接，请管理者检查 Account ID、Key 和库存读取权限。": "Cin7 rejected the connection. Ask the manager to check the account ID, key and stock read permission.", "已达到本系统的 Cin7 查询限额，请稍后再试。": "This app has reached its Cin7 request budget. Please retry later.", "Cin7 当前请求较多，请稍后再试。": "Cin7 is currently rate limited. Please retry later.", "该 SKU 正在查询中，请稍后再点一次。": "This SKU is already being queried. Please retry shortly.", "无法识别该 SKU 的完整编码，请检查商品资料。": "Could not identify the full SKU. Check the product record.", "Cin7 返回的数据无法可靠匹配该 SKU，本次未作数量判断。": "Cin7 data could not be reliably matched to this SKU. No quantity judgment was made.", "该 SKU 的库存记录过多，本次未展示不完整结果，请在 Cin7 核实。": "This SKU has too many stock records to display completely. Check Cin7.", "Cin7 返回的库存分页不完整，请稍后重试。": "Cin7 returned incomplete stock pages. Please retry later.", "页面会话已过期，请刷新页面后再查询。": "Your page session expired. Refresh before querying again.", "Cin7 连接超时或网络异常，请稍后重试。": "Cin7 timed out or the network failed. Please retry later.", "Cin7 查询超时，请稍后重试。": "Cin7 query timed out. Please retry later.", "Cin7 暂时无法返回库存，请稍后重试。": "Cin7 cannot return stock right now. Please retry later.", "Cin7 查询连接失败，请稍后重试。": "Cin7 lookup connection failed. Please retry later." });
+Object.assign(EN, {
+    '手动输入 SKU 和数量': 'Enter SKU and quantity manually', '数字 SKU': 'Numeric SKU', '本次增加数量': 'Quantity to add', '保存数量': 'Save quantity', '输入 4 / 5 位数字 SKU 和本次数量，点击保存；会累加到已有计数，不会覆盖。扫描枪每扫一次仍加 1。': 'Enter a 4- or 5-digit SKU and the quantity to add, then save. This adds to existing counts. Each scanner read still adds 1.', '本次增加数量必须大于 0': 'Quantity to add must be greater than 0', '匹配的库位': 'Matching locations', '输入 A01 可选择匹配库位；选好后点击开始核对。': 'Type A01 to choose a matching location, then start the check.', 'Cin7 按差异 SKU 辅助查询 · 待配置。Google 报表仍作为盘点基准。': 'Cin7 lookup for differing SKUs · Not configured. Google reports remain the check baseline.', 'Cin7 实时查询 · 待配置': 'Cin7 live lookup · Not configured', '配置 Cin7 连接后，可单独查询该差异 SKU；不改变 Google 盘点基准。': 'After configuring Cin7, look up this differing SKU without changing the Google check baseline.',
+    '库存读取失败，两个读取入口均暂时不可用，请稍后刷新重试': 'Inventory could not be refreshed from either source. Please retry later', '库存同步失败，暂用上次读取的库存，仅供已有任务参考': 'Inventory sync failed. The last snapshot is shown for existing checks only',
+    '云端报告': 'Cloud reports', '设置操作者 / 扫描器名称': 'Set operator / scanner name', '正在上传报告…': 'Uploading reports…', '✓ 已上传，再次检查': '✓ Uploaded · Check again', '报告已保存在本机，等待上传。': 'Report saved on this device, waiting to upload.', '↑ 上传 / 重试': '↑ Upload / Retry', '完成的报告可以上传到 PC 管理端。': 'Upload your completed report to the PC management console.', '完成本轮核对后将上传报告，已有扫描记录仍保留在本机。': 'Reports upload after finishing a round. Scanned counts stay on this device.', '↑ 上传报告': '↑ Upload report', '重试待上传报告': 'Retry pending reports', '首次填写操作者和扫描器名称，之后完成核对自动上传。补扫完成后会生成新报告，保留历史版本。': 'Set your operator and scanner name once. Finishing a check then uploads automatically. Each completed recount creates a new report and keeps previous versions.', '扫描记录本机保存 · 完成报告可上传共享': 'Counts saved locally · Completed reports can be shared', '报告署名设置': 'Report identification', '每台设备首次填写一次。管理者可以按操作者或扫描器筛选报告。': 'Set this once on each device. Managers can filter reports by operator or scanner.', '操作者': 'Operator', '扫描器名称': 'Scanner name', '例如：张三': 'e.g. Alex', '例如：DT50-01': 'e.g. DT50-01', '稍后设置': 'Set up later', '保存设置': 'Save settings', '此名称用于报告标识，不是登录身份认证。': 'Names identify reports and do not authenticate the operator.', '请填写操作者和扫描器名称。': 'Enter an operator and scanner name.', '名称不能超过 80 个字符。': 'Names must be 80 characters or fewer.', '设置保存失败，请检查设备存储空间。': 'Could not save settings. Check device storage.', '本机待上传报告保存失败，请先导出报告并检查存储空间。': 'Could not save the upload queue. Export your report and check storage.', '待上传报告已达 100 份，请先恢复网络完成上传。': '100 reports are waiting. Reconnect to upload them first.', '报告上传失败，请稍后重试。': 'Upload failed. Please retry later.', '云端报告服务尚未就绪，请稍后重试。': 'Cloud reports are not ready. Please retry later.', '上传回执未能保存在本机，稍后重试不会重复生成报告。': 'Could not save the receipt locally. Retrying will not create a duplicate report.', '上传超时，报告仍保留在本机，稍后将重试。': 'Upload timed out. The report stays on this device for retry.', '报告上传失败，请检查网络。': 'Upload failed. Check your connection.', '未能恢复上传设置或待上传报告，请保留浏览器数据。': 'Could not restore upload settings or reports. Keep the browser data.', '请先完成本轮核对，再上传报告。': 'Finish this round before uploading.', '上传授权已过期，请刷新页面后重试。': 'Upload session expired. Refresh the page and retry.', '报告校验失败，请重新提交。': 'Report validation failed. Submit it again.', '云端报告上传失败，已保留在本机，可稍后重试。': 'Cloud upload failed. Your report stays on this device for retry.', '报告上传失败，已保留在本机，请检查网络后重试。': 'Upload failed. Your report stays on this device. Check the connection and retry.', '报告编号': 'Report ID', '设备编号': 'Device ID', '云端接收时间': 'Cloud received at',
+    '累计': 'Total', ' 件': ' items', '每扫一次 +1 · 自动保存': 'Each scan +1 · Auto saved', '等待扫描 SKU…': 'Waiting for SKU scan…', '开始核对': 'Start check', '切换库位': 'Change location', '展开': 'Expand', '收起': 'Collapse', '库位核对': 'Stock check', '库存详情': 'Stock details', '正在读取库存…': 'Loading inventory…', '后台同步中 · 可继续核对': 'Syncing · Check can continue', '库存同步异常': 'Inventory sync issue', '普通 SKU': 'Numeric SKU', '特殊 SKU': 'Special SKU', 'SKU 输入类型': 'SKU input type', '数字 SKU': 'Numeric SKU', '包含 Replacement 的完整 SKU': 'Full SKU containing Replacement', '保存': 'Save', '只看差异': 'Differences only', '显示全部': 'Show all', '云端报告与上传设置': 'Cloud reports and settings', '等待复核': 'Recheck needed', '已上传': 'Uploaded', '待上传': 'Upload queued', '本机保存': 'Saved on device', '等待上传': 'Awaiting upload', '录入 Replacement 数量': 'Enter Replacement quantity', 'SKU（数字或 Replacement）': 'SKU (numeric or Replacement)', '例如：1719 或 $Replacement…': 'e.g. 1719 or $Replacement…', '录入数量': 'Enter quantity', 'Replacement 商品请按实物核对数量': 'Count Replacement items physically.', '请填写 4 / 5 位数字 SKU 或包含 Replacement 的完整 SKU。': 'Enter a 4- or 5-digit SKU or the full SKU containing Replacement.', '手动输入只接受 4 / 5 位数字 SKU 或包含 Replacement 的 SKU': 'Manual entry accepts 4- or 5-digit SKUs or SKUs containing Replacement.', '输入 4 / 5 位数字 SKU 或包含 Replacement 的完整 SKU，再填写数量保存；也可点击 Replacement 商品旁的录入数量按钮。': 'Enter a numeric SKU or the full Replacement SKU and quantity, then save. You can also use the quantity button beside a Replacement item.', '正在后台更新库存': 'Refreshing inventory in background', '当前库位仍有未完成或尚未安全保存到上传队列的记录。切换会替换当前任务，继续？': 'This location has an unfinished check or a report not yet safely saved in the upload queue. Switching replaces the current check. Continue?', '展开全部已核对库位': 'Show all checked locations', '收起已核对库位': 'Collapse checked locations', '本设备已核对库位': 'Locations checked on this device', '暂无已核对库位': 'No locations checked yet', '最近完成核对：': 'Last completed: ', '已核对库位记录未能保存，请保留当前页面并检查设备存储空间。': 'Could not save completed locations. Keep this page open and check device storage.', '完成本轮核对': 'Finish this round', '完成复核并上传': 'Finish recheck and upload', '再次核对差异': 'Recheck differences', '等待再次核对': 'Waiting for recheck', '首次核对有差异，尚未上传。请复核差异后再次完成核对。': 'Differences found on the first check. Nothing uploaded. Review the differences and finish again.', '复核已完成，仍有差异，将上传当前报告。': 'Recheck complete. Differences remain; uploading the current report.', '首次核对有差异，请再次完成核对后上传。': 'Differences found on the first check. Finish the recheck before uploading.', '首次核对发现差异，报告暂不上传。请再次核对差异商品，再点击「完成复核并上传」。原计数已保留；补扫会继续加 1，请勿重扫已清点的商品。': 'Differences found on the first check. The report has not been uploaded. Recheck the affected items, then select “Finish recheck and upload”. Existing counts are retained. Each additional scan adds 1; do not rescan items already counted.',
+    '新库位会替换当前任务，需要保留报告请先取消并上传或导出。继续？': 'A new location replaces this check. Cancel and upload or export the report first if you need to keep it. Continue?'
+});
+function toEnglish(value) {
+    const leading = value.match(/^\s*/)?.[0] ?? '', trailing = value.match(/\s*$/)?.[0] ?? '', s = value.trim();
+    let out = EN[s];
+    if (out === undefined) {
+        const rules = [
+            [/^本机已核对 (\d+) 个库位$/, (n) => `${n} locations checked on this device`],
+            [/^库存已同步 · (.*)$/, (time) => `Inventory synced · ${time}`],
+            [/^录入数量 (.*)$/, (sku) => `Enter quantity ${sku}`],
+            [/^库位库存数据异常：(.*)$/, (details) => `Location inventory data issue: ${details.replace(/第 (\d+) 行商品没有有效的 ~数字 后缀（(.*?)）/g, 'Row $1: missing ~numeric SKU suffix ($2)').replace(/SKU (\d+) 的 G 列数量无效或为负数（(.*?)）/g, 'SKU $1: invalid or negative column G quantity ($2)')}`],
+            [/^初始 Google 基准读取：(.*)$/, (time) => `Original Google baseline fetched: ${time}`],
+            [/^库位 (.+) · Google 原始基准 (.*) · 当前基准 (.*) · 实点 (.*)$/, (loc, google, current, actual) => `Location ${loc} · Original Google ${google} · Current expected ${current} · Counted ${actual}`],
+            [/^基准来源 Cin7 · 原 Google ([\d.]+) → 采用 ([\d.]+) · 读取 (.*)$/, (google, quantity, time) => `Cin7 baseline · Original Google ${google} → Adopted ${quantity} · Fetched ${time}`],
+            [/^已采用 SKU (\d+) 的 Cin7 基准：([\d.]+)；原 Google 数量和查询时间已保留。$/, (sku, quantity) => `Adopted Cin7 baseline for SKU ${sku}: ${quantity}. Original Google quantity and query time are retained.`],
+            [/^库位 (.+) · Google 基准 (.*) · 实点 (.*)$/, (loc, expected, actual) => `Location ${loc} · Google expected ${expected} · Counted ${actual}`],
+            [/^Cin7 当前库位可用数量：(.*)$/, (quantity) => `Cin7 available at this location: ${quantity}`],
+            [/^Cin7 读取：(.*) · 本次 API 请求 (\d+)(.*)$/, (time, calls, cached) => `Cin7 fetched: ${time} · API requests: ${calls}${cached ? ' (reused result from the last 5 seconds)' : ''}`],
+            [/^手动录入 (.+) · 已确认实物为 0 · 当前累计 ([\d.]+)$/, (sku, total) => `Manual entry ${sku} · Confirmed zero physical stock · Total ${total}`],
+            [/^手动录入 (.+) · 增加 ([\d.]+) · 当前累计 ([\d.]+)(.*)$/, (sku, amount, total, tail) => `Manual entry ${sku} · Added ${amount} · Total ${total}${EN[tail] ?? tail}`],
+            [/^本机有 (\d+) 份报告待上传，网络恢复后将自动重试。$/, (n) => `${n} reports are waiting on this device. Upload will retry when connected.`],
+            [/^报告已上传 · (.*)$/, (time) => `Report uploaded · ${time}`],
+            [/^第 (\d+) 轮 · 扫描中$/, (n) => `Round ${n} · Scanning`],
+            [/^已保存 (\d+) · \+1 件 · 当前累计 ([\d.]+) 件(.*)$/, (sku, n, tail) => `Saved ${sku} · +1 item · Total ${n}${EN[tail] ?? tail}`],
+            [/^已保存 (.+) × ([\d.]+)，请扫描下一款。$/, (sku, n) => `Saved ${sku} × ${n}. Scan the next item.`],
+            [/^有 (\d+) 项需要复核，请查看差异。$/, (n) => `${n} differences need review. See the list below.`],
+            [/^差异 ([-\d.]+)$/, (n) => `Difference ${n}`],
+            [/^收到条码：(.*) · (.*)$/, (code, time) => `Barcode: ${code} · ${time.replace('上午', 'AM ').replace('下午', 'PM ')}`],
+            [/^正在接收条码：(.*)$/, (code) => `Receiving barcode: ${code}`],
+            [/^刚才读到：(.*)$/, (code) => `Barcode read: ${code}`],
+            [/^当前核对基准：(.*)$/, (time) => `Check baseline: ${time}`],
+            [/^参考读取：(.*?)(（与本轮核对基准版本不同）)?$/, (time, different) => `Reference fetched: ${time}${different ? ' (different from this check’s baseline version)' : ''}`],
+            [/^其他库位（G 列可用数量）：(.*)$/, (locations) => 'Other locations (G · Available): ' + locations.replaceAll('（源数据异常，仅供参考）', ' (source data issue; reference only)').replaceAll('：', ': ').replaceAll('；', '; ')],
+            [/^(\d+) 个$/, (n) => `${n} locations`],
+            [/^修改数量 (.+)$/, (sku) => `Edit quantity ${sku}`],
+            [/^删除误扫 (.+)$/, (sku) => `Delete mistaken scan ${sku}`],
+            [/^删除 SKU (.+) 的扫描记录？删除后可重新扫描。$/, (sku) => `Delete the scan record for SKU ${sku}? You can scan it again afterwards.`],
+            [/^已删除 (.+)，可以重新扫描。$/, (sku) => `Deleted ${sku}. You can scan it again.`],
+            [/^URBANSALES · 逐件计数版 (v\d+)$/, (v) => `URBANSALES · Item counter ${v}`],
+            [/^找不到 (.+) 的正数量库存，请检查库位$/, (loc) => `No positive inventory found at ${loc}. Check the location.`],
+            [/^(.+) 源数据异常：(.+)$/, (loc, reason) => `Inventory data issue at ${loc}: ${toEnglish(reason)}`],
+            [/^第 (\d+) 行商品没有有效的 ~数字 后缀$/, (row) => `Row ${row}: SKU has no valid ~digits suffix`],
+            [/^SKU (\d+) 的 G 列数量无效或为负数（(.+)）$/, (sku, n) => `SKU ${sku}: invalid or negative quantity in column G (${n})`],
+            [/^数字 SKU (\d+) 对应多个完整 SKU，需核实源数据$/, (sku) => `Numeric SKU ${sku} maps to multiple full SKUs. Check the source data.`],
+            [/^第 (\d+) 行字段不足$/, (row) => `Row ${row} has missing fields`],
+            [/^无法恢复或保存任务：(.*)。请保留浏览器原数据，暂勿开始新任务。$/, (reason) => `Could not restore or save the check: ${toEnglish(reason)}. Keep the original browser data and do not start a new check yet.`],
+            [/^(.*)。已开始任务可按原基准继续，新任务需等待库存恢复。$/, (reason) => `${toEnglish(reason)}. Existing checks can continue with their original baseline. Wait for inventory to recover before starting a new check.`]
+        ];
+        for (const [pattern, replace] of rules) {
+            const match = s.match(pattern);
+            if (match) {
+                out = replace(...match.slice(1));
+                break;
+            }
+        }
+    }
+    return out === undefined ? value : leading + out + trailing;
+}
+function translateReport(csv, lang) {
+    if (lang !== 'en')
+        return csv;
+    // Parse CSV locally so only labels/status/notes are translated; identifiers and quantities stay unchanged.
+    const rows = [];
+    let row = [], field = '', quoted = false;
+    const text = csv.replace(/^\uFEFF/, '');
+    for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (c === '"') {
+            if (quoted && text[i + 1] === '"') {
+                field += '"';
+                i++;
+            }
+            else
+                quoted = !quoted;
+        }
+        else if (c === ',' && !quoted) {
+            row.push(field);
+            field = '';
+        }
+        else if ((c === '\n' || c === '\r') && !quoted) {
+            if (c === '\r' && text[i + 1] === '\n')
+                i++;
+            row.push(field);
+            rows.push(row);
+            row = [];
+            field = '';
+        }
+        else
+            field += c;
+    }
+    if (field || row.length) {
+        row.push(field);
+        rows.push(row);
+    }
+    rows.forEach((r, i) => { if (i === 0) {
+        for (let j = 0; j < r.length; j++)
+            r[j] = toEnglish(r[j]);
+    }
+    else {
+        for (const j of [6, 8, 12])
+            if (r[j])
+                r[j] = toEnglish(r[j]);
+        if (r[11])
+            r[11] = r[11] === 'scanning' ? 'Scanning' : r[11] === 'finished' ? 'Completed' : r[11];
+    } });
+    return '\uFEFF' + rows.map(r => r.map(v => '"' + v.replaceAll('"', '""') + '"').join(',')).join('\r\n');
+}
+Object.assign(EN, { '数量（可填 0）': 'Quantity (0 allowed)', '零数量仅用于当前库位应有的 SKU；误扫的多出商品请删除记录': 'Zero is only allowed for an expected SKU at this location. Delete an accidentally scanned extra item.', '输入 4 / 5 位数字 SKU 或包含 Replacement 的完整 SKU，再填写数量保存。正数累加；输入 0 表示确认该 SKU 在本库位无实物，并将实点数量设为 0。': 'Enter a 4- or 5-digit SKU or a full Replacement SKU, then save its quantity. Positive quantities add to the count; 0 confirms no physical stock at this location and sets its counted quantity to 0.', 'URBANSALES · 逐件计数版 v20': 'URBANSALES · Item counting v20' });
+
+const languageStorageKey='ubswh.google-test.bincheck.language';
+let uiLanguage='zh';try{uiLanguage=localStorage.getItem(languageStorageKey)==='en'?'en':'zh';}catch{}
+const originalText=new WeakMap(),originalAttributes=new WeakMap();
+let translationQueued=false;
+function localize(message){return uiLanguage==='en'?toEnglish(String(message)):String(message);}
+function applyTranslations(){
+ document.documentElement.lang=uiLanguage==='en'?'en':'zh-CN';document.title=uiLanguage==='en'?'Stock check · Urbansales':'库位核对 · Urbansales';
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;
+ while((node=walker.nextNode())){const parent=node.parentElement;if(!parent||parent.closest('script,style,textarea,[data-language-control],[data-no-translate]'))continue;if(parent.closest('.sku-label,#pending-label')&&!['未知 SKU','未找到对应的完整 SKU'].includes(node.nodeValue.trim()))continue;
+  const current=node.nodeValue;let record=originalText.get(node);if(!record||current!==record.last)record={source:current,last:current};const wanted=uiLanguage==='en'?toEnglish(record.source):record.source;if(wanted!==current)node.nodeValue=wanted;record.last=wanted;originalText.set(node,record);
+ }
+ for(const el of document.querySelectorAll('[placeholder],[aria-label],[title]')){if(el.hasAttribute('data-language-control'))continue;let records=originalAttributes.get(el)||{};for(const name of ['placeholder','aria-label','title']){if(!el.hasAttribute(name))continue;const current=el.getAttribute(name);let record=records[name];if(!record||current!==record.last)record={source:current,last:current};const wanted=uiLanguage==='en'?toEnglish(record.source):record.source;if(wanted!==current)el.setAttribute(name,wanted);record.last=wanted;records[name]=record;}originalAttributes.set(el,records);}
+ const button=document.getElementById('language-toggle');const label=uiLanguage==='en'?'中文':'EN',aria=uiLanguage==='en'?'Switch to Chinese / 切换到中文':'Switch to English / 切换到英文',title=uiLanguage==='en'?'Switch to Chinese':'切换到英文';if(button.textContent!==label)button.textContent=label;if(button.getAttribute('aria-label')!==aria)button.setAttribute('aria-label',aria);if(button.title!==title)button.title=title;button.setAttribute('aria-pressed',uiLanguage==='en'?'true':'false');
+}
+function queueTranslations(){if(translationQueued)return;translationQueued=true;Promise.resolve().then(()=>{translationQueued=false;applyTranslations();});}
+new MutationObserver(records=>{if(records.some(record=>{const element=record.target.nodeType===Node.ELEMENT_NODE?record.target:record.target.parentElement;return !element?.closest('[data-no-translate]');}))queueTranslations();}).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title']});
+document.getElementById('language-toggle').onclick=()=>{uiLanguage=uiLanguage==='zh'?'en':'zh';try{localStorage.setItem(languageStorageKey,uiLanguage);}catch{}applyTranslations();if(typeof render==='function')render();if(typeof focusScanner==='function')focusScanner();};
+applyTranslations();
+
+const uploadProfileKey='ubswh.google-test.report.profile',uploadQueueKey='ubswh.google-test.report.queue';
+let reportProfile=null,reportQueue=[],uploadBusy=false,lastUploadError='',uploadQueueError=false;
+function newDeviceId(){const bytes=new Uint8Array(16);crypto.getRandomValues(bytes);return 'd_'+Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');}
+function currentReportKey(){if(!session||session.phase!=='finished'||session.recheckRequired||!reportProfile?.operator)return '';return canonicalJSON({startedAt:session.startedAt,checkedAt:session.checkedAt,round:session.round,scanned:session.scanned,...(session.baselineOverrides?{baselineOverrides:session.baselineOverrides}:{}),profile:reportProfile});}
+function saveUploadQueue(queue){if(uploadQueueError)return false;try{localStorage.setItem(uploadQueueKey,JSON.stringify(queue));reportQueue=queue;return true;}catch{lastUploadError='本机待上传报告保存失败，请先导出报告并检查存储空间。';updateUploadStatus();return false;}}
+function updateUploadStatus(){
+ const panel=document.getElementById('cloud-report');if(!panel)return;panel.hidden=!session;if(!session)return;
+ const key=currentReportKey(),entry=key?reportQueue.find(e=>e.taskKey===key):null,pendingCount=reportQueue.filter(e=>e.status==='queued').length;
+ $('upload-report').disabled=session.phase!=='finished'||session.recheckRequired||uploadBusy||!!storageError||uploadQueueError;
+ $('upload-profile-button').textContent=reportProfile?.operator?reportProfile.operator+' / '+reportProfile.deviceName:'设置操作者 / 扫描器名称';
+ $('upload-queue-note').textContent=pendingCount?'本机有 '+pendingCount+' 份报告待上传，网络恢复后将自动重试。':'';
+ $('upload-queue-note').hidden=!pendingCount;$('upload-retry').hidden=!pendingCount;$('upload-retry').disabled=uploadBusy;
+ if(session.recheckRequired){$('upload-status').textContent='首次核对有差异，尚未上传。请复核差异后再次完成核对。';$('upload-status').className='upload-status upload-error';$('upload-report').textContent='等待再次核对';}
+ else if(uploadBusy){$('upload-status').textContent='正在上传报告…';$('upload-status').className='upload-status';}
+ else if(entry?.status==='sent'){$('upload-status').textContent='报告已上传 · '+date(entry.receivedAt);$('upload-status').className='upload-status uploaded';$('upload-report').textContent='✓ 已上传，再次检查';}
+ else if(entry||lastUploadError){$('upload-status').textContent=lastUploadError||'报告已保存在本机，等待上传。';$('upload-status').className='upload-status upload-error';$('upload-report').textContent='↑ 上传 / 重试';}
+ else{$('upload-status').textContent=session.phase==='finished'?'完成的报告可以上传到 PC 管理端。':'完成本轮核对后将上传报告，已有扫描记录仍保留在本机。';$('upload-status').className='upload-status';$('upload-report').textContent='↑ 上传报告';}
+ const summary=$('report-summary-status');summary.textContent=session.recheckRequired?'等待复核':entry?.status==='sent'?'已上传':entry?'待上传':session.phase==='scanning'?'本机保存':'等待上传';summary.className=entry?.status==='sent'?'uploaded':session.recheckRequired||lastUploadError?'upload-error':'';
+}
+function showReportProfile(){clearTimeout(scanTimer);profileOpen=true;$('report-profile-modal').hidden=false;$('report-operator').value=reportProfile?.operator||'';$('report-device').value=reportProfile?.deviceName||'';$('report-profile-error').hidden=true;document.body.style.overflow='hidden';$('report-operator').focus();}
+function closeReportProfile(){profileOpen=false;$('report-profile-modal').hidden=true;document.body.style.overflow=pending||helpOpen||invalidOpen?'hidden':'';focusScanner();}
+async function saveReportProfile(){const operator=$('report-operator').value.trim(),deviceName=$('report-device').value.trim();if(!operator||!deviceName){$('report-profile-error').textContent='请填写操作者和扫描器名称。';$('report-profile-error').hidden=false;return;}
+ const profile={operator,deviceName,deviceId:reportProfile?.deviceId||newDeviceId()};if(operator.length>80||deviceName.length>80){$('report-profile-error').textContent='名称不能超过 80 个字符。';$('report-profile-error').hidden=false;return;}
+ try{localStorage.setItem(uploadProfileKey,JSON.stringify(profile));reportProfile=profile;}catch{$('report-profile-error').textContent='设置保存失败，请检查设备存储空间。';$('report-profile-error').hidden=false;return;}
+ closeReportProfile();updateUploadStatus();if(session?.phase==='finished')await uploadCurrentReport();
+}
+async function uploadCurrentReport(){if(!session||session.phase!=='finished'||session.recheckRequired||uploadBusy||uploadQueueError)return;if(!reportProfile?.operator||!reportProfile?.deviceName){showReportProfile();return;}
+ try{const payload=makeReport(session,reportProfile),taskKey=currentReportKey(),id=await reportId(payload);let entry=reportQueue.find(e=>e.id===id);
+  if(!entry){const queued=reportQueue.filter(e=>e.status==='queued');if(queued.length>=100)throw Error('待上传报告已达 100 份，请先恢复网络完成上传。');const sent=reportQueue.filter(e=>e.status==='sent').slice(-50);entry={id,payload,taskKey,status:'queued'};if(!saveUploadQueue([...sent,...queued,entry]))return;}
+  lastUploadError='';updateUploadStatus();if(entry.status==='sent')return;await flushReports();
+ }catch(e){lastUploadError=e.message||'报告上传失败，请稍后重试。';updateUploadStatus();}
+}
+async function flushReports(){if(uploadBusy||!reportQueue.some(e=>e.status==='queued'))return;uploadBusy=true;updateUploadStatus();try{
+ const configAbort=new AbortController(),configTimer=setTimeout(()=>configAbort.abort(),30000);let config,setup;try{config=await fetch('/api/upload-config',{cache:'no-store',signal:configAbort.signal});setup=await config.json();}finally{clearTimeout(configTimer);}if(!config.ok||!setup.enabled)throw Error('云端报告服务尚未就绪，请稍后重试。');
+ for(const entry of [...reportQueue].filter(e=>e.status==='queued')){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),35000);let response,receipt;try{response=await fetch('/api/upload-report',{method:'POST',headers:{'Content-Type':'application/json','X-Scanner-Upload':'1'},body:JSON.stringify({id:entry.id,payload:entry.payload}),signal:controller.signal});receipt=await response.json();}finally{clearTimeout(timer);}
+  if(!response.ok||!receipt.ok||receipt.id!==entry.id)throw Error(receipt.error||'报告上传失败，请稍后重试。');
+  const next=reportQueue.map(e=>e.id===entry.id?{...e,status:'sent',receivedAt:receipt.receivedAt}:e);if(!saveUploadQueue(next))throw Error('上传回执未能保存在本机，稍后重试不会重复生成报告。');lastUploadError='';
+ }
+ }catch(e){lastUploadError=e.name==='AbortError'?'上传超时，报告仍保留在本机，稍后将重试。':e.message||'报告上传失败，请检查网络。';}finally{uploadBusy=false;updateUploadStatus();}}
+function initializeUploads(){try{const saved=localStorage.getItem(uploadProfileKey);if(saved)reportProfile=JSON.parse(saved);if(!reportProfile?.deviceId){const deviceId=newDeviceId();reportProfile={operator:'',deviceId,deviceName:'DT50-'+deviceId.slice(2,8)};localStorage.setItem(uploadProfileKey,JSON.stringify(reportProfile));}const queue=localStorage.getItem(uploadQueueKey);reportQueue=queue?JSON.parse(queue):[];if(!Array.isArray(reportQueue))throw Error('Invalid queue');}catch{lastUploadError='未能恢复上传设置或待上传报告，请保留浏览器数据。';uploadQueueError=true;reportQueue=[];}
+ $('upload-report').onclick=uploadCurrentReport;$('upload-retry').onclick=flushReports;$('upload-profile-button').onclick=showReportProfile;$('save-report-profile').onclick=saveReportProfile;$('cancel-report-profile').onclick=closeReportProfile;
+ window.addEventListener('online',()=>void flushReports());setInterval(()=>void flushReports(),60000);updateUploadStatus();if(reportQueue.some(e=>e.status==='queued'))void flushReports();}
+
+let cin7Ready=false,cin7Configured=false,cin7ConfigError=false,cin7Open=false,cin7Busy=false,cin7Context=null,cin7Result=null,cin7Error='',cin7Controller=null,cin7Generation=0;
+const cin7Errors={NOT_CONFIGURED:'Cin7 尚未配置，请联系管理者检查连接设置。',AUTH:'Cin7 拒绝了连接，请管理者检查 Account ID、Key 和库存读取权限。',LOCAL_LIMIT:'已达到本系统的 Cin7 查询限额，请稍后再试。',UPSTREAM_LIMIT:'Cin7 当前请求较多，请稍后再试。',BUSY:'该 SKU 正在查询中，请稍后再点一次。',INVALID_SKU:'无法识别该 SKU 的完整编码，请检查商品资料。',INVALID_RESPONSE:'Cin7 返回的数据无法可靠匹配该 SKU，本次未作数量判断。',TOO_MANY_ROWS:'该 SKU 的库存记录过多，本次未展示不完整结果，请在 Cin7 核实。',INCOMPLETE:'Cin7 返回的库存分页不完整，请稍后重试。',SESSION:'页面会话已过期，请刷新页面后再查询。',NETWORK:'Cin7 连接超时或网络异常，请稍后重试。',TIMEOUT:'Cin7 查询超时，请稍后重试。',UPSTREAM:'Cin7 暂时无法返回库存，请稍后重试。',CONNECTION:'Cin7 查询连接失败，请稍后重试。'};
+function updateCin7Buttons(){for(const button of document.querySelectorAll('[data-cin7-sku]')){button.disabled=!cin7Ready||!cin7Configured||cin7Busy;button.textContent=!cin7Ready?'Cin7 正在连接…':cin7ConfigError?'Cin7 暂不可用':cin7Configured?'Cin7 实时校对':'Cin7 实时校对 · 待配置';button.title=cin7Configured?'点击后查询该 SKU，不修改本轮基准或实点数量。':'配置 Cin7 连接后，可单独查询该差异 SKU；不改变 Google 盘点基准。';}const note=$('cin7-config-note');if(note)note.textContent=cin7Configured?'Cin7 按需辅助复核：查询不改动数据，实物一致时可单独采用该 SKU 的 Cin7 基准。':'Cin7 按差异 SKU 辅助查询 · 待配置。Google 报表仍作为盘点基准。';}
+function createCin7Button(sku){if(isReplacementSku(sku))return text('span','Replacement 商品请按实物核对数量','micro-copy');const button=text('button','','text-button cin7-lookup');button.type='button';button.dataset.cin7Sku=sku;button.onclick=()=>showCin7(sku);button.disabled=!cin7Ready||!cin7Configured||cin7Busy;button.textContent=!cin7Ready?'Cin7 正在连接…':cin7ConfigError?'Cin7 暂不可用':cin7Configured?'Cin7 实时校对':'Cin7 实时校对 · 待配置';button.title='点击后查询该 SKU，不修改本轮基准或实点数量。';return button;}
+function renderCin7(){if(!cin7Context)return;const c=cin7Context;$('cin7-sku-label').textContent=c.fullSku;$('cin7-context').textContent='库位 '+c.location+' · Google 原始基准 '+c.googleExpected+' · 当前基准 '+c.expected+' · 实点 '+(c.actual===''?'—':c.actual);$('cin7-loading').hidden=!cin7Busy;$('cin7-error').hidden=!cin7Error;$('cin7-error').textContent=cin7Error;$('cin7-retry').disabled=cin7Busy;$('cin7-result').hidden=!cin7Result;updateCin7Buttons();$('cin7-adopt').disabled=true;if(!cin7Result){$('cin7-zero-label').hidden=true;$('cin7-adopt-note').textContent='';return;}
+ const result=cin7Result,groups=result.groups,matches=groups.filter(g=>(g.bin||g.location).trim().toUpperCase()===c.location.toUpperCase()),multiple=new Set(matches.map(g=>g.location)).size>1;
+ $('cin7-fetched').textContent='Cin7 读取：'+date(result.fetchedAt)+' · 本次 API 请求 '+result.apiCalls+(result.cached?'（5 秒内重复查询，复用刚才结果）':'');
+ $('cin7-current').textContent=multiple?'多个仓库存在同名库位，请按仓库分别核实。':!matches.length?'Cin7 未返回当前库位库存行，不能据此直接判定为 0。':matches[0].available===null?'当前库位的可用数量字段缺失，请在 Cin7 核实。':'Cin7 当前库位可用数量：'+matches[0].available;
+ const list=$('cin7-rows');list.textContent='';const sorted=[...groups].sort((a,b)=>Number(matches.includes(b))-Number(matches.includes(a)));for(const group of sorted.slice(0,200)){const row=text('tr','',''+(matches.includes(group)?'cin7-current-row':''));for(const value of [group.location||'—',group.bin||'—',group.available??'—',group.onHand??'—',group.allocated??'—',group.onOrder??'—'])row.append(text('td',value));list.append(row);}
+ $('cin7-empty').hidden=!!groups.length;$('cin7-limited').hidden=groups.length<=200;
+ const zeroNeeded=matches.length===1&&String(matches[0].available)==='0'&&session?.scanned[c.sku]===undefined;$('cin7-zero-label').hidden=!zeroNeeded;
+ let adoptReason='';try{if(!session||session.startedAt!==c.startedAt||session.location!==c.location)throw Error('当前任务已变化，请关闭后重新校对');cin7BaselineCandidate(session,c.sku,result,zeroNeeded&&$('cin7-zero').checked);}catch(e){adoptReason=e.message;}
+ $('cin7-adopt').disabled=cin7Busy||!!adoptReason||!!storageError;$('cin7-adopt-note').textContent=adoptReason||'实点与当前库位 Cin7 可用数量一致，可采用该 SKU 的 Cin7 基准。';
+} 
+function useCin7Baseline(){if(cin7Busy||!cin7Result||!cin7Context)return;try{const c=cin7Context;if(!session||session.startedAt!==c.startedAt||session.location!==c.location)throw Error('当前任务已变化，请关闭后重新校对');const next=adoptCin7Baseline(session,c.sku,cin7Result,$('cin7-zero').checked);if(!persist(next))throw Error('保存失败，尚未采用 Cin7 基准');closeCin7();render();notice('已采用 SKU '+c.sku+' 的 Cin7 基准：'+next.expected[c.sku]+'；原 Google 数量和查询时间已保留。');if(next.phase==='finished')void uploadCurrentReport();}catch(e){cin7Error=e.message;renderCin7();}}
+
+async function showCin7(sku){if(!session||!cin7Configured)return;const row=results(session).find(r=>r.sku===sku);if(!row||(row.status==='一致'&&!session.baselineOverrides?.[sku]))return;clearTimeout(scanTimer);closeLocationSuggestions();cin7Context={startedAt:session.startedAt,location:session.location,googleExpected:(session.originalExpected||session.expected)[sku]??'0',sku,fullSku:session.labels[sku]&&session.labels[sku].endsWith('~'+sku)?session.labels[sku]:sku,expected:row.expected,actual:row.actual};cin7Open=true;cin7Result=null;cin7Error='';$('cin7-zero').checked=false;$('cin7-modal').hidden=false;document.body.style.overflow='hidden';$('cin7-close').focus();await runCin7Lookup();}
+async function runCin7Lookup(){if(!cin7Open||cin7Busy)return;const generation=++cin7Generation;cin7Busy=true;cin7Error='';cin7Result=null;$('cin7-zero').checked=false;renderCin7();const controller=new AbortController();cin7Controller=controller;const timer=setTimeout(()=>controller.abort(),42000);try{const response=await fetch('/api/cin7/lookup',{method:'POST',headers:{'Content-Type':'application/json','X-Cin7-Lookup':'1'},body:JSON.stringify({numericSku:cin7Context.sku,sku:cin7Context.fullSku}),signal:controller.signal});const result=await response.json();if(!response.ok||!result.ok)throw Error(cin7Errors[result.errorCode]||cin7Errors.CONNECTION);if(generation!==cin7Generation||!cin7Open)return;cin7Result=result;}catch(e){if(generation!==cin7Generation||!cin7Open)return;cin7Error=e.name==='AbortError'?cin7Errors.TIMEOUT:e.message||cin7Errors.CONNECTION;}finally{clearTimeout(timer);if(generation===cin7Generation){cin7Busy=false;cin7Controller=null;renderCin7();}}}
+function closeCin7(){++cin7Generation;cin7Controller?.abort();cin7Controller=null;cin7Busy=false;cin7Open=false;$('cin7-modal').hidden=true;document.body.style.overflow=pending||helpOpen||profileOpen||invalidOpen?'hidden':'';updateCin7Buttons();focusScanner();}
+async function initializeCin7(){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);$('cin7-close').onclick=closeCin7;$('cin7-back').onclick=closeCin7;$('cin7-retry').onclick=runCin7Lookup;$('cin7-adopt').onclick=useCin7Baseline;$('cin7-zero').onchange=renderCin7;try{const response=await fetch('/api/cin7/config',{cache:'no-store',signal:controller.signal});const result=await response.json();if(!response.ok)throw Error('Unavailable');cin7Configured=result.configured===true;}catch{cin7ConfigError=true;}finally{clearTimeout(timer);cin7Ready=true;updateCin7Buttons();}}
+
+const locationHistoryKey='ubswh.google-test.bincheck.completed-locations';
+let completedLocations=[],locationHistoryError=false,locationHistoryExpanded=false;
+let locationHistoryFrame=null;
+function mergeCompletedLocation(entries,location,checkedAt){
+ if(typeof location!=='string'||!location.trim()||location.length>80||typeof checkedAt!=='string'||!Number.isFinite(Date.parse(checkedAt)))return entries;
+ const normalized=location.trim().toUpperCase(),previous=entries.find(e=>e.location===normalized);
+ if(previous&&Date.parse(previous.checkedAt)>=Date.parse(checkedAt))return entries;
+ return [...entries.filter(e=>e.location!==normalized),{location:normalized,checkedAt}].sort((a,b)=>Date.parse(b.checkedAt)-Date.parse(a.checkedAt)||a.location.localeCompare(b.location));
+}
+function saveLocationHistory(entries){try{localStorage.setItem(locationHistoryKey,JSON.stringify(entries));completedLocations=entries;locationHistoryError=false;}catch{completedLocations=entries;locationHistoryError=true;}}
+function rememberCompletedLocation(task){if(task?.phase!=='finished'||task.recheckRequired)return;saveLocationHistory(mergeCompletedLocation(completedLocations,task.location,task.checkedAt));}
+function initializeLocationHistory(){
+ $('location-history-toggle').onclick=()=>{locationHistoryExpanded=!locationHistoryExpanded;updateLocationHistoryExpansion();};
+ window.addEventListener('resize',scheduleLocationHistoryExpansion);
+ try{const raw=localStorage.getItem(locationHistoryKey),entries=raw?JSON.parse(raw):[];if(!Array.isArray(entries))throw Error('Invalid history');for(const entry of entries)completedLocations=mergeCompletedLocation(completedLocations,entry?.location,entry?.checkedAt);}catch{locationHistoryError=true;return;}
+ // Recover available completed checks from this browser, never from other devices.
+ for(const entry of reportQueue)completedLocations=mergeCompletedLocation(completedLocations,entry?.payload?.location,entry?.payload?.checkedAt);
+ rememberCompletedLocation(session);
+ saveLocationHistory(completedLocations);
+}
+function renderLocationHistory(){
+ $('completed-locations-label').textContent='本机已核对 '+completedLocations.length+' 个库位';const list=$('completed-locations');list.textContent='';
+ if(!completedLocations.length){list.append(text('span',localize('暂无已核对库位'),'completed-empty'));}else for(const entry of completedLocations){const item=text('span',entry.location,'completed-location');item.title=localize('最近完成核对：')+date(entry.checkedAt);list.append(item);}
+ $('location-history-error').hidden=!locationHistoryError;
+ scheduleLocationHistoryExpansion();
+}
+
+function scheduleLocationHistoryExpansion(){if(locationHistoryFrame!==null)cancelAnimationFrame(locationHistoryFrame);locationHistoryFrame=requestAnimationFrame(()=>{locationHistoryFrame=null;updateLocationHistoryExpansion();});}
+function updateLocationHistoryExpansion(){
+ const list=$('completed-locations'),button=$('location-history-toggle'),style=getComputedStyle(list);
+ const collapsedHeight=2*parseFloat(style.lineHeight)+parseFloat(style.rowGap||'0');
+ // Compare content height to two text rows even while expanded.
+ const overflowing=list.scrollHeight>collapsedHeight+1;
+ if(!overflowing)locationHistoryExpanded=false;
+ list.classList.toggle('expanded',locationHistoryExpanded);
+ button.hidden=!overflowing;
+ button.setAttribute('aria-expanded',String(locationHistoryExpanded));
+ $('location-history-toggle-label').textContent=locationHistoryExpanded?'收起':'展开';
+}
+
+const $=id=>document.getElementById(id);
+const storageKey='ubswh.google-test.bincheck.v3.preview';
+let inventory=null,inventoryStale=false,session=null,pending=null,count='',loading=false,fetching=false,loadError='',storageError='',manual=false,helpOpen=false,sound=true,audio=null,filter='全部',scanTimer=null,lastOutsideKey=0,invalidOpen=false,profileOpen=false;
+let locationChoices=[],locationOptions=[],activeLocationOption=-1;
+let manualSkuSpecial=false;
+const date=v=>new Date(v).toLocaleString(uiLanguage==='en'?'en-NZ':'zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
+function unlock(){try{if(!audio)audio=new AudioContext();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{}}
+function errorTone(){if(!sound)return;unlock();try{for(let i=0;i<2;i++){const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=560;g.gain.value=.15;o.start(audio.currentTime+i*.23);o.stop(audio.currentTime+i*.23+.14);}}catch{}}
+function notice(txt,bad=false){if(pending){$('pending-error').textContent=txt;$('pending-error').hidden=false;}else{$('notice-text').textContent=txt;$('notice').className='message '+(bad?'error':'success');$('notice').hidden=false;$('notice').setAttribute('role',bad?'alert':'status');}if(bad)errorTone();}
+function hideNotice(){$('notice').hidden=true;$('pending-error').hidden=true;}
+function persist(s){try{localStorage.setItem(storageKey,JSON.stringify(s));session=s;rememberCompletedLocation(s);return true;}catch{notice('保存失败，本次操作未确认。请导出报告并检查设备存储空间。',true);return false;}}
+function focusScanner(){if(session&&session.phase==='scanning'&&!pending&&!helpOpen&&!profileOpen&&!cin7Open&&!storageError){const field=invalidOpen?$('retry-barcode'):$('barcode');field.setAttribute('inputmode',manual?'numeric':'none');field.setAttribute('virtualkeyboardpolicy',manual?'auto':'manual');field.focus();if(!manual){try{navigator.virtualKeyboard?.hide();}catch{}}}}
+function text(tag,txt,cls){const e=document.createElement(tag);e.textContent=txt;if(cls)e.className=cls;return e;}
+function render(){
+ renderLocationHistory();
+ updateLocationStart();
+ $('start').textContent=session?'切换库位':'开始核对';$('location').disabled=!!pending||!!storageError;
+ $('refresh').disabled=loading;$('connection-text').textContent=loading?(inventory?'正在后台更新库存':'正在更新库存'):loadError?'库存连接异常':'库存已连接';$('connection').className='connection '+(loadError?'offline':'');
+ $('source-time').textContent=inventory?date(inventory.fetchedAt):loading?'正在读取…':'读取失败';$('source-bins').textContent=inventory?locationChoices.length+' 个':'—';
+ $('mobile-refresh').disabled=loading;const syncTime=inventory?new Date(inventory.fetchedAt).toLocaleTimeString(uiLanguage==='en'?'en-NZ':'zh-CN',{hour:'2-digit',minute:'2-digit',hour12:false}):'';$('mobile-sync-text').textContent=loading?(inventory?'后台同步中 · 可继续核对':'正在读取库存…'):loadError?'库存同步异常':'库存已同步 · '+syncTime;$('mobile-source-error').hidden=!loadError;$('mobile-source-error').textContent=loadError;
+ $('source-error').hidden=!loadError;$('source-error').textContent=loadError?loadError+'。已开始任务可按原基准继续，新任务需等待库存恢复。':'';
+ $('empty').hidden=!!session;$('task').hidden=!session;$('snapshot-note').hidden=!session;
+ updateUploadStatus();
+ if(!session)return;
+ const done=session.phase==='finished',reviewed=done||session.recheckRequired===true||(session.completionCount??0)>0||session.round>1,rows=results(session),expected=Object.keys(session.expected).length,recorded=Object.keys(session.scanned).filter(k=>k in session.expected).length;
+ $('active-location').textContent=session.location;$('phase').textContent=done?'已完成':`第 ${session.round} 轮 · 扫描中`;$('phase').className='pill '+(done?'neutral':'green');$('scan-title').textContent=done?'本轮已完成':session.recheckRequired?'再次核对差异':'扫描商品';
+ $('scanned-count').textContent=recorded;$('expected-count').textContent=' / '+expected;$('progress').style.width=(expected?Math.min(100,recorded/expected*100):0)+'%';
+ $('scan-form').hidden=done;$('finished-banner').hidden=!done;$('finish').hidden=done;$('resume').hidden=!done;$('finish').textContent=session.recheckRequired?'完成复核并上传':'完成本轮核对';$('finish').disabled=!!pending||!!storageError;$('resume').disabled=!!storageError;
+ $('manual-numeric-mode').disabled=!!pending||!!storageError;$('manual-special-mode').disabled=!!pending||!!storageError;$('manual-sku').disabled=!!pending||!!storageError;$('manual-quantity').disabled=!!pending||!!storageError;$('manual-submit').disabled=!!pending||!!storageError;$('barcode').disabled=!!pending||!!storageError;$('scan-submit').disabled=!!pending||!!storageError;$('location-note').textContent='初始 Google 基准已固定；可按 SKU 明确采用 Cin7 基准。';
+ $('total-count').textContent=format(Object.values(session.scanned).reduce((n,v)=>n+units(v),0n));
+ $('snapshot-note').textContent=(session.baselineOverrides&&Object.keys(session.baselineOverrides).length?'初始 Google 基准读取：':'当前核对基准：')+date(session.snapshot.fetchedAt);$('row-count').textContent=rows.length;
+ const totals=Object.fromEntries(['漏扫','多出','数量不符','一致'].map(k=>[k,rows.filter(r=>r.status===k).length]));
+ const allMatch=totals['一致']===rows.length;$('finish-title').textContent=allMatch?'核对通过':'本轮扫描已完成';$('finish-note').textContent=allMatch?(session.baselineOverrides&&Object.keys(session.baselineOverrides).length?'商品与实点数量符合当前采用的基准，Cin7 来源已逐项标记。':'商品与录入数量均与库存基准一致。'):'查看下方差异，可继续补扫或修改数量。';$('finished-banner').className='finished-banner '+(allMatch?'passed':'has-difference');
+ const stats=$('stats');stats.textContent='';for(const k of ['漏扫','多出','数量不符','一致']){const b=text('button','','stat '+(filter===k?'selected':''));b.append(text('strong',totals[k],totals[k]>0&&k!=='一致'&&(reviewed||k!=='漏扫')?'stat-red':''),text('span',k));if(totals[k]>0&&k!=='一致'&&(reviewed||k!=='漏扫'))b.classList.add('stat-difference');b.onclick=()=>{filter=filter===k?'全部':k;render();};stats.append(b);}
+ $('list-caption').textContent=done?'核对结果':'扫描过程中显示当前差异';$('filter').textContent=filter==='全部'?'只看差异':'显示全部';
+ const list=$('results');list.textContent='';const visible=rows.filter(r=>filter==='全部'||(filter==='差异'?r.status!=='一致':r.status===filter));
+ if(!visible.length){const e=text('div','','no-differences');e.append(text('p','✓ 此筛选下没有商品'));list.append(e);}
+ for(const r of visible){const hasDifference=r.status!=='一致'&&(reviewed||r.actual!=='');const item=text('article','','sku-row'+(hasDifference?' has-difference':'')),line=text('div','','sku-line');if(isReplacementSku(r.sku))item.classList.add('replacement-row');line.append(text('span','▥ '+r.sku,'sku-number'),text('span',r.status==='漏扫'&&!reviewed?'待扫描':r.status,'result-badge '+(r.status==='一致'?'match':r.status==='漏扫'&&!reviewed?'waiting':'mismatch')));item.append(line,text('p',r.label,'sku-label'));const adopted=session.baselineOverrides?.[r.sku];if(adopted){item.append(text('p','基准来源 Cin7 · 原 Google '+adopted.googleQuantity+' → 采用 '+adopted.quantity+' · 读取 '+date(adopted.fetchedAt),'baseline-origin-note'));if(r.status==='一致')item.append(createCin7Button(r.sku));}
+ const bottom=text('div','','sku-bottom'),q=text('div','','quantities');for(const [label,value]of [['基准',r.expected],['实点',r.actual===''?'—':r.actual]]){const span=text('span',label+' ');span.append(text('b',value));q.append(span);}if(hasDifference)q.append(text('span','差异 '+r.diff,'difference'));bottom.append(q);
+ if(!done&&(r.actual!==''||isReplacementSku(r.sku))){const actions=text('div','','row-actions');for(const [label,op]of (r.actual===''?[['录入数量','scan']]:[['修改数量','edit'],['删除误扫','remove']])){const b=text('button',op==='remove'?'×':'✎');b.setAttribute('aria-label',label+' '+r.sku);b.title=label;b.onclick=()=>{if(op!=='remove')openPending(r.sku,op);else removeScan(r.sku);};actions.append(b);}bottom.append(actions);}item.append(bottom);if(hasDifference){const note=text('div','','other-locations-note');note.append(text('strong','备注 · 其他库位'),text('p',otherLocationHint(session,r.sku)));note.append(createCin7Button(r.sku));if(session.reference){note.append(text('small','参考读取：'+date(session.reference.fetchedAt)+(session.reference.version!==session.snapshot.version?'（与本轮核对基准版本不同）':'')));}item.append(note);}list.append(item);}
+}
+async function fetchInventory(force=false){if(fetching)return;fetching=true;loading=true;render();const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);try{const r=await fetch('/api/inventory'+(force?'?refresh=1':''),{cache:'no-store',signal:controller.signal});const j=await r.json();if(!r.ok)throw Error(j.error||'库存读取失败');if(!j.data||!j.version)throw Error('库存响应格式异常');inventory=j;locationChoices=availableLocations(j);inventoryStale=j.stale===true;loadError=inventoryStale?(j.syncError||'库存同步失败，暂用上次读取的库存，仅供已有任务参考'):'';if(session&&!session.reference)persist(attachStockReference(session,j));}catch(e){inventoryStale=true;loadError=e.name==='AbortError'?'库存请求超时，请点刷新重试':e.message||'网络连接失败';}finally{clearTimeout(timer);fetching=false;loading=false;render();}}
+function begin(){
+ unlock();
+ if(!inventory||inventoryStale||storageError||pending)return notice(storageError||(!inventory&&loading?'库存读取中，请稍候':'请先等待库存连接成功'),true);
+ try{
+  const location=$('location').value.trim().toUpperCase();
+  if(session?.location===location){closeLocationSuggestions();focusScanner();return;}
+  const next=startSession(inventory,location);
+  if(needsSwitchConfirmation()&&!confirm(localize('当前库位仍有未完成或尚未安全保存到上传队列的记录。切换会替换当前任务，继续？')))return;
+  if(persist(next)){
+   manual=false;setManualSkuMode(false,false);$('barcode').setAttribute('inputmode','none');$('manual').textContent='手动输入';$('scan-hint').textContent='每扫一次 +1 · 自动保存';
+   closeLocationSuggestions();$('location').value=next.location;filter='全部';hideNotice();$('barcode').value='';$('scan-receipt').hidden=true;$('scan-receipt').textContent='已开始核对。尚未收到条码输入。';render();$('location').blur();$('scan-form').scrollIntoView({block:'center',behavior:'smooth'});focusScanner();
+  }
+ }catch(e){notice(e.message,true);}
+}
+function needsSwitchConfirmation(){
+ if(!session)return false;
+ if(session.phase==='scanning'&&!session.recheckRequired&&!Object.keys(session.scanned).length)return false;
+ const key=currentReportKey();
+ return !(session.phase==='finished'&&!uploadQueueError&&key&&reportQueue.some(entry=>entry.taskKey===key&&['queued','sent'].includes(entry.status)));
+}
+function openPending(sku,kind){clearTimeout(scanTimer);pending={sku,kind};count=kind==='edit'?session.scanned[sku]:'';$('accepted').checked=kind==='edit'&&!(sku in session.expected);hideNotice();$('pending-modal').hidden=false;$('confirm-heading').textContent=kind==='edit'?'重新清点数量':isReplacementSku(sku)?'录入 Replacement 数量':'是这件商品吗？';$('pending-eyebrow').textContent=kind==='edit'?'RECOUNT':'CONFIRM ITEM';$('pending-sku').textContent=sku;$('pending-sku').classList.toggle('replacement-sku',isReplacementSku(sku));$('pending-label').textContent=session.labels[sku]||'未找到对应的完整 SKU';$('pending-location').textContent='⌖ '+session.location;$('unexpected').hidden=sku in session.expected;$('count').value=count;$('confirm').disabled=!count;$('barcode').blur();document.body.style.overflow='hidden';render();}
+function cancelPending(){pending=null;clearTimeout(scanTimer);$('pending-modal').hidden=true;document.body.style.overflow=helpOpen?'hidden':'';hideNotice();$('barcode').value='';render();focusScanner();}
+function showInvalid(raw){clearTimeout(scanTimer);invalidOpen=true;$('invalid-value').textContent='刚才读到：'+(raw.length>64?raw.slice(0,64)+'…':raw);$('retry-barcode').value='';$('invalid-modal').hidden=false;document.body.style.overflow='hidden';errorTone();focusScanner();}
+function closeInvalid(){invalidOpen=false;clearTimeout(scanTimer);$('invalid-modal').hidden=true;$('retry-barcode').value='';document.body.style.overflow=helpOpen||pending?'hidden':'';focusScanner();}
+function scan(source){clearTimeout(scanTimer);if(!session||pending||helpOpen||profileOpen||cin7Open||storageError)return;const field=source&&source.tagName==='INPUT'?source:$('barcode'),raw=field.value.trim();if(!raw)return;field.value='';unlock();$('scan-receipt').hidden=false;$('scan-receipt').textContent='收到条码：'+raw+' · '+new Date().toLocaleTimeString();try{const next=recordItem(session,raw),sku=raw.trim();if(persist(next)){if(invalidOpen)closeInvalid();render();const outside=!(sku in session.expected),over=!outside&&units(next.scanned[sku])>units(session.expected[sku]);notice('已保存 '+sku+' · +1 件 · 当前累计 '+next.scanned[sku]+' 件'+(outside?'（不在当前库位应有清单中，已记为多出）':over?'（已超过基准数量）':''),outside||over);focusScanner();}}catch(e){if(!/^[0-9]{4,5}$/.test(raw))showInvalid(raw);else{notice(e.message,true);focusScanner();}}}
+
+function barcodeInput(source){clearTimeout(scanTimer);if(pending||helpOpen||profileOpen||cin7Open)return;const field=source&&source.tagName==='INPUT'?source:$('barcode'),raw=field.value;$('scan-receipt').textContent=raw?'正在接收条码：'+raw:'尚未收到条码输入。';if(raw.trim()&&(!manual||field.id==='retry-barcode'))scanTimer=setTimeout(()=>scan(field),300);}
+function confirmCount(){if(!pending||!session)return;try{const next=saveCount(session,pending.sku,count,pending.kind,$('accepted').checked);if(persist(next)){const sku=pending.sku;cancelPending();notice('已保存 '+sku+' × '+next.scanned[sku]+'，请扫描下一款。');}}catch(e){notice(e.message,true);}}
+function finish(){if(!session||session.phase!=='scanning'||pending)return;if($('barcode').value.trim())return scan();const next=completeRound(session);if(persist(next)){filter='差异';render();const bad=results(next).filter(r=>r.status!=='一致').length;if(next.recheckRequired){notice('首次核对有差异，尚未上传。请复核差异后再次完成核对。',true);alert(localize('首次核对发现差异，报告暂不上传。请再次核对差异商品，再点击「完成复核并上传」。原计数已保留；补扫会继续加 1，请勿重扫已清点的商品。'));focusScanner();return;}notice(bad?'复核已完成，仍有差异，将上传当前报告。':'本库位核对通过，商品与录入数量均一致。',!!bad);void uploadCurrentReport();}}
+function resume(){if(!session||session.phase!=='finished')return;if(persist({...session,phase:'scanning',round:session.round+1,checkedAt:undefined})){filter='全部';hideNotice();render();notice('补扫已开始，原计数保留；每件再扫一次会继续加 1，请勿重扫已清点的商品。');focusScanner();}}
+function removeScan(sku){if(!session||session.phase!=='scanning'||!confirm(localize('删除 SKU '+sku+' 的扫描记录？删除后可重新扫描。')))return;const scanned={...session.scanned};delete scanned[sku];if(persist({...session,scanned})){render();notice('已删除 '+sku+'，可以重新扫描。');focusScanner();}}
+function download(){if(!session)return;const url=URL.createObjectURL(new Blob([translateReport(exportCSV(session),uiLanguage)],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=(uiLanguage==='en'?'audit_':'核对_')+session.location+'_'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function showHelp(open){helpOpen=open;clearTimeout(scanTimer);$('help-modal').hidden=!open;document.body.style.overflow=open||pending?'hidden':'';if(!open)focusScanner();}
+function updateLocationStart(){$('start').disabled=!inventory||inventoryStale||!!pending||!!storageError||!$('location').value.trim();const issues=inventory?.issues?.[$('location').value.trim().toUpperCase()];$('location-issue').hidden=!issues?.length;$('location-issue').textContent=issues?.length?'库位库存数据异常：'+issues.join('；'):'';}
+function closeLocationSuggestions(){$('location-suggestions').hidden=true;$('location').setAttribute('aria-expanded','false');$('location').removeAttribute('aria-activedescendant');locationOptions=[];activeLocationOption=-1;}
+function chooseLocation(value){$('location').value=value;updateLocationStart();closeLocationSuggestions();$('location').focus();closeLocationSuggestions();}
+function highlightLocationOption(index){activeLocationOption=index;const buttons=$('location-suggestions').children;for(let i=0;i<buttons.length;i++){buttons[i].classList.toggle('active',i===index);buttons[i].setAttribute('aria-selected',i===index?'true':'false');}if(index>=0&&buttons[index]){$('location').setAttribute('aria-activedescendant',buttons[index].id);buttons[index].scrollIntoView({block:'nearest'});}else $('location').removeAttribute('aria-activedescendant');}
+function showLocationSuggestions(){const list=$('location-suggestions');locationOptions=locationSuggestions(locationChoices,$('location').value);activeLocationOption=-1;$('location').removeAttribute('aria-activedescendant');list.textContent='';if(!locationOptions.length||pending||storageError){closeLocationSuggestions();return;}for(let i=0;i<locationOptions.length;i++){const value=locationOptions[i],option=text('button',value,'location-option');option.type='button';option.id='location-option-'+i;option.tabIndex=-1;option.setAttribute('role','option');option.setAttribute('aria-selected','false');option.onpointerdown=e=>e.preventDefault();option.onclick=()=>chooseLocation(value);list.append(option);}list.hidden=false;$('location').setAttribute('aria-expanded','true');}
+function locationInput(e){if(e?.isComposing)return;const field=$('location'),upper=field.value.toUpperCase();if(upper!==field.value){const start=field.selectionStart,end=field.selectionEnd;field.value=upper;if(start!==null&&end!==null)field.setSelectionRange(start,end);}updateLocationStart();showLocationSuggestions();}
+$('start').onclick=begin;$('location').addEventListener('input',locationInput);$('location').addEventListener('compositionend',locationInput);$('location').addEventListener('focus',showLocationSuggestions);$('location').addEventListener('blur',closeLocationSuggestions);$('location').addEventListener('keydown',e=>{if(e.isComposing)return;if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if($('location-suggestions').hidden)showLocationSuggestions();if(!locationOptions.length)return;const delta=e.key==='ArrowDown'?1:-1;highlightLocationOption(activeLocationOption<0?(delta>0?0:locationOptions.length-1):(activeLocationOption+delta+locationOptions.length)%locationOptions.length);}else if(e.key==='Escape'){e.preventDefault();closeLocationSuggestions();}else if(e.key==='Enter'){e.preventDefault();if(!$('location-suggestions').hidden&&activeLocationOption>=0)chooseLocation(locationOptions[activeLocationOption]);else{closeLocationSuggestions();begin();}}});
+
+$('barcode').addEventListener('input',barcodeInput);$('barcode').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key==='Tab')&&$('barcode').value.trim()){e.preventDefault();scan();}});$('barcode').addEventListener('compositionend',barcodeInput);$('scan-submit').onclick=()=>scan();
+$('manual').onclick=()=>{manual=!manual;clearTimeout(scanTimer);$('barcode').setAttribute('inputmode',manual?'numeric':'none');$('manual').textContent=manual?'切回扫码':'手动输入';$('scan-hint').textContent=manual?'手动输入后按回车或点右侧箭头。':'每扫一次 +1 · 自动保存';focusScanner();};
+function setManualSkuMode(special,focus=true){
+ manualSkuSpecial=special;const field=$('manual-sku');field.setAttribute('inputmode',special?'text':'numeric');field.setAttribute('autocapitalize','off');field.setAttribute('virtualkeyboardpolicy','auto');field.placeholder=special?'包含 Replacement 的完整 SKU':'数字 SKU';$('manual-sku-label').textContent=special?'特殊 SKU':'数字 SKU';$('manual-numeric-mode').setAttribute('aria-pressed',String(!special));$('manual-special-mode').setAttribute('aria-pressed',String(special));
+ if(focus){field.blur();field.focus();}
+}
+function manualSubmit(){if(pending||helpOpen||profileOpen||cin7Open||storageError||!session)return;const value=$('manual-sku').value.trim(),quantity=$('manual-quantity').value.trim();if(!value)return notice('请填写 4 / 5 位数字 SKU 或包含 Replacement 的完整 SKU。',true);unlock();try{const amount=format(units(quantity)),next=recordQuantity(session,value,quantity);if(persist(next)){$('manual-sku').value='';$('manual-quantity').value='1';render();const recordedSku=Object.keys(next.scanned).find(k=>k.toLowerCase()===value.toLowerCase())||value,outside=!(recordedSku in session.expected),over=!outside&&units(next.scanned[recordedSku])>units(session.expected[recordedSku]);notice('手动录入 '+recordedSku+(amount==='0'?' · 已确认实物为 0 · 当前累计 ':' · 增加 '+amount+' · 当前累计 ')+next.scanned[recordedSku]+(outside?'（不在当前库位应有清单中，已记为多出）':over?'（已超过基准数量）':''),outside||over);$('manual-sku').focus();}}catch(e){notice(e.message,true);}}
+$('manual-numeric-mode').onclick=()=>setManualSkuMode(false);$('manual-special-mode').onclick=()=>setManualSkuMode(true);$('manual-submit').onclick=manualSubmit;$('manual-sku').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('manual-quantity').focus();$('manual-quantity').select();}});$('manual-quantity').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();manualSubmit();}});
+
+$('retry-barcode').addEventListener('input',()=>barcodeInput($('retry-barcode')));$('retry-barcode').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key==='Tab')&&$('retry-barcode').value.trim()){e.preventDefault();scan($('retry-barcode'));}});$('invalid-back').onclick=closeInvalid;$('invalid-close').onclick=closeInvalid;
+$('refresh').onclick=()=>fetchInventory(true);$('mobile-refresh').onclick=()=>fetchInventory(true);$('mobile-stock-details').onclick=()=>{const open=document.body.classList.toggle('mobile-stock-open');$('mobile-stock-details').setAttribute('aria-expanded',String(open));if(open)$('stock-sidebar').scrollIntoView({block:'nearest',behavior:'smooth'});};$('confirm').onclick=confirmCount;$('cancel').onclick=cancelPending;$('cancel-top').onclick=cancelPending;$('finish').onclick=finish;$('resume').onclick=resume;$('export').onclick=download;$('filter').onclick=()=>{filter=filter==='全部'?'差异':'全部';render();};$('dismiss').onclick=hideNotice;
+$('sound').onclick=()=>{unlock();sound=!sound;$('sound').textContent=sound?'♪':'♩';$('sound').setAttribute('aria-label',sound?'关闭错误提示音':'开启错误提示音');};$('help').onclick=()=>showHelp(true);$('guide-help').onclick=()=>showHelp(true);$('close-help').onclick=()=>showHelp(false);$('help-ok').onclick=()=>showHelp(false);
+for(const digit of ['1','2','3','4','5','6','7','8','9','.','0','⌫']){const b=text('button',digit);b.setAttribute('aria-label',digit==='⌫'?'删除一位':digit);b.onclick=()=>{if(digit==='⌫')count=count.slice(0,-1);else if(digit==='.')count=count.includes('.')?count:(count||'0')+'.';else if(count.length<20)count+=digit;$('count').value=count;$('confirm').disabled=!count;};$('numpad').append(b);}
+document.addEventListener('keydown',e=>{if(pending){if(e.key==='Tab')return;if(e.key==='Escape'){cancelPending();return;}e.preventDefault();e.stopImmediatePropagation();return;}if(cin7Open){if(e.key==='Escape')closeCin7();else if(e.key==='Tab'){const controls=[...$('cin7-modal').querySelectorAll('button:not(:disabled),input:not(:disabled)')],first=controls[0],last=controls[controls.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}return;}if(helpOpen||profileOpen)return;
+ // A hardware scan after tapping a non-editable control still returns to the scan box.
+ const t=e.target,editable=t&&(/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.isContentEditable);
+ if(session&&session.phase==='scanning'&&!storageError&&!editable&&!e.ctrlKey&&!e.altKey&&!e.metaKey&&/^[0-9]$/.test(e.key)){e.preventDefault();const now=Date.now(),field=invalidOpen?$('retry-barcode'):$('barcode');field.value=now-lastOutsideKey<150?field.value+e.key:e.key;lastOutsideKey=now;focusScanner();barcodeInput(field);}
+},true);
+function restoreScannerFocus(){const active=document.activeElement;if(active&&/^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)&&!['barcode','retry-barcode'].includes(active.id))return;focusScanner();}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){restoreScannerFocus();fetchInventory();}});window.addEventListener('focus',restoreScannerFocus);setInterval(()=>fetchInventory(),1800000);
+try{localStorage.setItem(storageKey+'.check','1');localStorage.removeItem(storageKey+'.check');const raw=localStorage.getItem(storageKey);if(raw){session=restore(raw);if(session){$('location').value=session.location;notice('已恢复上次核对，可继续操作。');}}}catch(e){storageError=e.message||'无法恢复或保存任务';notice('无法恢复或保存任务：'+storageError+'。请保留浏览器原数据，暂勿开始新任务。',true);}
+$('boot-warning').hidden=true;setManualSkuMode(false,false);const compactViewport=window.matchMedia('(max-width:780px)');if(compactViewport.matches)$('report-disclosure').open=false;compactViewport.addEventListener?.('change',e=>{if(!e.matches)$('report-disclosure').open=true;});initializeUploads();initializeLocationHistory();render();fetchInventory();void initializeCin7();
+</script><aside style="position:fixed;bottom:0;right:0;background:#fff4ce;color:#573d00;padding:4px 9px;z-index:30;font-size:12px">GOOGLE TEST · 独立测试版</aside></body></html>
