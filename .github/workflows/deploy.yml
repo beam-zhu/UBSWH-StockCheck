@@ -1,0 +1,29 @@
+name: Deploy independent StockCheck test site
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: stockcheck-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check dedicated project and backend configuration
+        run: |
+          test "${{ github.event.repository.name }}" = "UBSWH-StockCheck"
+          node -e 'const fs=require("fs");const vm=require("vm");const c={window:{}};vm.runInNewContext(fs.readFileSync("public/config.js","utf8"),c);if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(c.window.STOCKCHECK_CONFIG.apiUrl))throw Error("Configure NEW Apps Script endpoint first")'
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Publish test frontend
+        id: deployment
+        uses: actions/deploy-pages@v4
