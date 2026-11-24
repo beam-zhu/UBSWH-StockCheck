@@ -1,0 +1,11 @@
+/* Approved charcoal / muted mustard theme. Visual overrides only. */
+:root{--brand-ink:#252522;--brand-yellow:#c8af52;--brand-bg:#f7f7f4}
+body{background:#f7f7f4;color:#252522}
+header{background:#252522;border-bottom-color:#44443b;color:#fafaf7}.brand{color:#c8af52}.brand small{color:#d5c995}.head-actions a{color:#fafaf7}.private{background:#444336;color:#e3cf7e}.scanner-link{color:#e3cf7e}.head-actions #language{background:transparent;border-color:#96927a;color:#fafaf7}.head-actions #language:hover{background:#44443b}
+button{border-color:#aaa99a;color:#252522}button:hover{background:#efeee4}.primary{background:#252522;color:#e3cf7e;border-color:#252522}.primary:hover{background:#3c3c32;color:#f3e5ac}
+input:not([type=checkbox]),select{background:#fff;border-color:#bdbdac;color:#252522}input:focus,select:focus{outline-color:#8d7728}input[type=checkbox]{accent-color:#8d7728}
+label>span,.eyebrow,p,.list-heading span,.footnote,.stat span,.meta-label{color:#626258}.stat,.card{border-color:#d8d8cf;box-shadow:0 3px 12px #2525220a}.stat{border-top:4px solid #c8af52}.stat strong{color:#252522}.stat.bad strong{color:#b83532}
+th{background:#efeee6;color:#4f4f44}td{border-color:#e4e3d9}td small{color:#68685d}.badge{background:#edf4e9;color:#32623b}.bad,.difference{color:#b83532;font-weight:750}.badge.bad,.error{background:#fff0ee;color:#b83532}
+.pagination{color:#55554a}.pagination-controls label>span{color:#55554a}.settings-card>p,.settings-note,.detail-meta,.meta-value{color:#55554a}.settings-explanation{background:#f7f3e3}.settings-explanation p{color:#5d5436}#save-message{color:#32623b}
+.backdrop{background:#25252299}.detail-top{border-color:#deddd1}.empty>div{color:#8d7728}
+#google-login{background:#f7f7f4!important}#google-login-form{border-color:#bdb69b!important;border-top:5px solid #c8af52!important}#google-login-form h2{color:#252522}#google-login-form button{background:#252522;color:#e3cf7e}#google-login-error{color:#b83532}
