@@ -1,0 +1,27 @@
+/* Approved charcoal / muted mustard theme. Visual overrides only. */
+:root{--bg:#f7f7f4;--ink:#252522;--muted:#62625b;--green:#252522;--border:#d8d8cf;--orange:#c8af52;--brand-yellow:#c8af52;--alert:#b83532}
+body{color:var(--ink)}
+.topbar{background:#252522;color:#fafaf7;border-bottom-color:#42423b}
+.brand,.brand-sub,.device-tag{color:#c8af52}.brand-mark{background:#c8af52;color:#252522}.mobile-title{color:#fafaf7;border-left-color:#77776b}
+.header-right .icon-button,.topbar .language-toggle{color:#fafaf7}.topbar .language-toggle:hover,.topbar .icon-button:hover{background:#44443b;color:#e3cf7e}
+.topbar .language-toggle:focus-visible,.topbar .icon-button:focus-visible{outline-color:#e3cf7e}
+button:focus-visible,a:focus-visible{outline-color:#8d7728}
+.field-label,.section-kicker,.quantity-entry label>span,.sku-label,.counter-note,.quantities,.scan-hint,.scan-receipt,.location-history-toggle,.completed-locations{color:#4f4f47}
+.page-heading p,.eyebrow,.location-note,.micro-copy,.source-details span,.source-name span,.empty-state p,.empty-steps{color:#68685e}
+.location-field,.profile-input,.quantity-entry input{background:#fff;border-color:#b9b9ab;color:#252522}.location-field:focus-within{border-color:#8d7728;box-shadow:0 0 0 3px #c8af5228}
+input::placeholder{color:#717166}.button.primary,.scan-submit{background:#252522;border-color:#252522;color:#e3cf7e;box-shadow:none}.button.primary:not(:disabled):hover,.scan-submit:hover{background:#3c3c32;color:#f3e5ac}
+.button.secondary{background:#fff;border-color:#9e9e90;color:#252522}.button.secondary:hover{background:#efeee5}
+.barcode-field{border-color:#ac9136;background:#fffdf5;box-shadow:0 0 0 2px #c8af521c}.barcode-field>span,.barcode-field>svg{color:#51461f}
+.text-button,.row-actions button,.mobile-sync .icon-button,.mobile-sync .text-button{color:#504418}.text-button:hover{color:#252522}
+.guide-card,.snapshot-note,.other-locations-note,.baseline-origin-note,.cin7-adoption{background:#f7f3e3;border-color:#ddd2a2;color:#51482b}.other-locations-note>strong,.other-locations-note>p,.other-locations-note>small,.cin7-adoption p,.cin7-context,.cin7-footnote,.cin7-plan{color:#5d5436}
+.completed-location,.pill.neutral,.empty-steps span{background:#eeece0;color:#49493e}.location-option{color:#252522}.location-option:hover,.location-option.active{background:#f3e9bc}.location-suggestions{border-color:#bdb691;box-shadow:0 8px 22px #25252220}
+.manual-modes button{color:#656557}.manual-modes button[aria-pressed="true"]{color:#504418;border-color:#ac9136}
+.cin7-lookup{background:#e3cf7e;color:#252522;border:1px solid #c8af52;border-radius:6px;padding:6px 10px}.cin7-lookup:hover{background:#d7be62}
+.stat-grid{background:#f1f0e8;border-color:#d8d8cf}.stat span,html[lang="en"] .stat span{color:#505046}.scan-progress strong,.scan-progress strong span{color:#34342c}.scan-progress small{color:#68685e}.progress-track>span{background:#c8af52}
+.cin7-table th{background:#f1eee0}.cin7-current-row{background:#f8efc9}.cin7-current,#cin7-loading{color:#51461f}.cin7-adoption input{accent-color:#8d7728}
+.sheets-icon,.step-number{background:#f3edcf;color:#5e5020;border-color:#d5c68c}.source-name>svg{color:#70602b}
+.report-disclosure,.report-disclosure>summary{border-color:#d8d8cf;color:#505046}
+/* Keep discrepancy and success meanings separate from the brand palette. */
+.sku-row.has-difference .sku-number,.sku-row.has-difference .difference,.sku-row.has-difference .result-badge,.stat .stat-red,.stat.stat-difference>span,.finished-banner.has-difference,.finished-banner.has-difference strong,.finished-banner.has-difference p,.message.error{color:#b83532;font-weight:750}
+.sku-row.has-difference .result-badge,.finished-banner.has-difference,.message.error{background:#fff0ee;border-color:#e5b7b1}
+.result-badge.match,.upload-status.uploaded{color:#32623b}.result-badge.match{background:#edf4e9}.result-badge.waiting{color:#656557;background:#eeeee6}
